@@ -6,16 +6,18 @@ const router = express.Router();
 
 // Simple auto-responses for common queries
 const autoResponses = {
-  "appointment": "I can help you book an appointment. What type of appointment do you need?",
-  "billing": "I can assist with billing questions. What specific billing issue do you have?",
-  "emergency": "For emergencies, please call 911 immediately or visit our emergency department.",
-  "hours": "Our visiting hours are 10 AM to 8 PM. Emergency services are 24/7.",
-  "contact": "You can reach us at +1-555-0123 or email info@hospital.com",
-  "insurance": "We accept most major insurance providers. Please bring your insurance card.",
-  "pharmacy": "Our pharmacy is open Monday to Friday, 8 AM to 8 PM.",
-  "lab": "Lab services are available Monday to Friday, 7 AM to 6 PM.",
-  "covid": "COVID-19 testing is available. Please call 9876543210 to schedule.",
-  "services": "We offer a wide range of services including general medicine, surgery, pediatrics, gynecology, orthopedics, neurology, emergency care, laboratory services, and pharmacy. What specific service are you interested in?",
+  "modules": "TAJPE offers 42+ comprehensive modules including Front Office Management, Clinical Management, In-Patient Management, Diagnosis Management, General Management, Administration, and more. Which module are you interested in?",
+  "demo": "I'd be happy to arrange a demo of TAJPE Hospital Management System. Please contact our sales team at sales@tajpe.com or call +91 9048767111 to schedule a personalized demonstration.",
+  "pricing": "TAJPE offers 4 scalable versions: Clinic (Basic), Pro (up to 50 beds), Prime (up to 100 beds), and Premium (200+ beds). Contact us for detailed pricing information.",
+  "contact": "You can reach TAJPE at +91 9048767111 (INDIA) or +971 56 690 7222 (UAE). Email us at sales@tajpe.com for more information.",
+  "features": "TAJPE includes Patient Portal, Mobile App, WhatsApp Integration, Teleconsultation, Business Intelligence, and more. What specific feature interests you?",
+  "implementation": "Our expert team provides complete implementation support including training, data migration, and ongoing support. We ensure smooth transition to TAJPE.",
+  "support": "We provide 24/7 technical support. Contact our support team at support@tajpe.com or call +91 9048767111 for immediate assistance.",
+  "integration": "TAJPE integrates with lab equipment, third-party applications, and existing hospital systems. We've interfaced with 200+ models of medical equipment.",
+  "portal": "Our Patient Portal allows online appointment booking, medical record access, test results viewing, and family member management. It transforms your hospital website into a comprehensive patient platform.",
+  "mobile": "Our Mobile App enables appointment booking, video consultations, secure payments, and lab results access. It can be customized for your hospital branding and launched on app stores.",
+  "whatsapp": "WhatsApp Integration provides appointment scheduling, lab result access, invoice sharing, and automated messaging including welcome messages, confirmations, and reminders.",
+  "teleconsultation": "Vconsult Teleconsultation offers one-to-one video interaction, low bandwidth HD video, seamless EMR integration, payment gateway integration, and automated e-prescription facility.",
   "default": "Thank you for your message. Our support team will respond shortly."
 };
 
@@ -71,26 +73,30 @@ router.post("/", async (req, res) => {
     const lowerMessage = message.toLowerCase();
     let reply = "";
     
-    if (lowerMessage.includes("what are your services") || lowerMessage.includes("services")) {
-      reply = autoResponses.services;
-    } else if (lowerMessage.includes("appointment") || lowerMessage.includes("book")) {
-      reply = autoResponses.appointment;
-    } else if (lowerMessage.includes("billing") || lowerMessage.includes("payment")) {
-      reply = autoResponses.billing;
-    } else if (lowerMessage.includes("emergency") || lowerMessage.includes("urgent")) {
-      reply = autoResponses.emergency;
-    } else if (lowerMessage.includes("hours") || lowerMessage.includes("visit")) {
-      reply = autoResponses.hours;
-    } else if (lowerMessage.includes("contact") || lowerMessage.includes("phone")) {
+    if (lowerMessage.includes("modules") || lowerMessage.includes("what are your modules") || lowerMessage.includes("services")) {
+      reply = autoResponses.modules;
+    } else if (lowerMessage.includes("demo") || lowerMessage.includes("demonstration") || lowerMessage.includes("show me")) {
+      reply = autoResponses.demo;
+    } else if (lowerMessage.includes("pricing") || lowerMessage.includes("cost") || lowerMessage.includes("price") || lowerMessage.includes("how much")) {
+      reply = autoResponses.pricing;
+    } else if (lowerMessage.includes("contact") || lowerMessage.includes("phone") || lowerMessage.includes("email") || lowerMessage.includes("reach")) {
       reply = autoResponses.contact;
-    } else if (lowerMessage.includes("insurance")) {
-      reply = autoResponses.insurance;
-    } else if (lowerMessage.includes("pharmacy") || lowerMessage.includes("medicine")) {
-      reply = autoResponses.pharmacy;
-    } else if (lowerMessage.includes("lab") || lowerMessage.includes("test")) {
-      reply = autoResponses.lab;
-    } else if (lowerMessage.includes("covid")) {
-      reply = autoResponses.covid;
+    } else if (lowerMessage.includes("features") || lowerMessage.includes("what features") || lowerMessage.includes("capabilities")) {
+      reply = autoResponses.features;
+    } else if (lowerMessage.includes("implementation") || lowerMessage.includes("setup") || lowerMessage.includes("installation")) {
+      reply = autoResponses.implementation;
+    } else if (lowerMessage.includes("support") || lowerMessage.includes("help") || lowerMessage.includes("technical")) {
+      reply = autoResponses.support;
+    } else if (lowerMessage.includes("integration") || lowerMessage.includes("integrate") || lowerMessage.includes("equipment")) {
+      reply = autoResponses.integration;
+    } else if (lowerMessage.includes("portal") || lowerMessage.includes("patient portal")) {
+      reply = autoResponses.portal;
+    } else if (lowerMessage.includes("mobile") || lowerMessage.includes("app") || lowerMessage.includes("application")) {
+      reply = autoResponses.mobile;
+    } else if (lowerMessage.includes("whatsapp") || lowerMessage.includes("whats app")) {
+      reply = autoResponses.whatsapp;
+    } else if (lowerMessage.includes("teleconsultation") || lowerMessage.includes("video") || lowerMessage.includes("consultation")) {
+      reply = autoResponses.teleconsultation;
     } else {
       // Check if default message was already sent in this session
       const hasDefaultMessage = chat.messages.some(msg => 

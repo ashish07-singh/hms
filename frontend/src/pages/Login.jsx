@@ -116,6 +116,10 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(data.user));
 
         toast.success('Login successful!');
+        
+        // Trigger storage event to update navbar
+        window.dispatchEvent(new Event('storage'));
+        
         navigate('/');
       }
 

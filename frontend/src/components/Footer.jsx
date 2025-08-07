@@ -16,12 +16,12 @@ const Footer = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl font-bold">MEDICARE</h3>
-                <p className="text-sm text-gray-400">Excellence in Healthcare</p>
+                <h3 className="text-xl font-bold">TAJPE</h3>
+                <p className="text-sm text-gray-400">Hospital Management System</p>
               </div>
             </div>
             <p className="text-gray-400 mb-4">
-              Providing world-class healthcare services with innovation, compassion, and medical excellence since our establishment.
+              Unlocking new heights of excellence in hospital operations through comprehensive, scalable, and innovative healthcare technology solutions.
             </p>
             <div className="flex space-x-4">
               <a 
@@ -84,14 +84,14 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Our Services</h4>
+            <h4 className="text-lg font-semibold mb-4">Our Modules</h4>
             <ul className="space-y-2">
-              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">All Services</Link></li>
-              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">General Surgery</Link></li>
-              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">Pediatrics</Link></li>
-              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">Orthopedics</Link></li>
-              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">Neurology</Link></li>
-              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">Emergency Care</Link></li>
+              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">All Modules</Link></li>
+              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">Front Office</Link></li>
+              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">Clinical Management</Link></li>
+              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">Patient Portal</Link></li>
+              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">Mobile App</Link></li>
+              <li><Link to="/services" className="text-gray-400 hover:text-white transition duration-300">WhatsApp Integration</Link></li>
             </ul>
           </div>
 
@@ -104,8 +104,8 @@ const Footer = () => {
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                 </svg>
                 <div>
-                  <a href="tel:+919876543210" className="text-gray-400 hover:text-white transition duration-300">+91-9876543210</a>
-                  <p className="text-gray-400 text-sm">Emergency: 24/7</p>
+                  <a href="tel:+919048767111" className="text-gray-400 hover:text-white transition duration-300">+91 9048767111</a>
+                  <p className="text-gray-400 text-sm">UAE: +971 56 690 7222</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -113,16 +113,16 @@ const Footer = () => {
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                 </svg>
-                <a href="mailto:ashish.s@webarclight.com" className="text-gray-400 hover:text-white transition duration-300">info@medicare.com</a>
+                <a href="mailto:sales@tajpe.com" className="text-gray-400 hover:text-white transition duration-300">sales@tajpe.com</a>
               </div>
               <div className="flex items-start">
                 <svg className="w-5 h-5 text-teal-400 mr-3 mt-1" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
                 <div>
-                  <p className="text-gray-400">123 Healthcare Avenue,</p>
-                  <p className="text-gray-400">Medical District, City Center</p>
-                  <p className="text-gray-400">State 123456, India</p>
+                  <p className="text-gray-400">TAJPE</p>
+                  <p className="text-gray-400">9/826/ C, 11-12 5th Floor, Meda,</p>
+                  <p className="text-gray-400">Kakkanad, Kochi – 682 030, India</p>
                 </div>
               </div>
             </div>
@@ -135,7 +135,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © Copyright 2025 MEDICARE. All Rights Reserved
+              © Copyright 2025 TAJPE. All Rights Reserved
             </div>
             <div className="flex space-x-6 text-sm">
               <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition duration-300">
@@ -151,7 +151,7 @@ const Footer = () => {
           </div>
           <div className="text-center mt-4">
             <p className="text-gray-500 text-xs">
-              Powered By MEDICARE Digital Solutions
+              Powered By TAJPE
             </p>
           </div>
         </div>

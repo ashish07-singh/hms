@@ -2,100 +2,100 @@ import React, { useState } from "react";
 
 const departments = [
   {
-    title: "General Surgery",
-    shortDescription: "Advanced surgical treatment for abdominal and related conditions.",
-    fullDescription: "General Surgery involves surgical treatment of abdominal and related conditions with advanced techniques and experienced surgeons. Our team specializes in both traditional and minimally invasive procedures, ensuring optimal patient outcomes with reduced recovery times.",
+    title: "Front Office Management",
+    shortDescription: "Comprehensive front office operations including appointment scheduling and patient registration.",
+    fullDescription: "Streamline your front office operations with our comprehensive modules covering appointment scheduling, patient registration, front desk management, outpatient services, insurance desk operations, and patient feedback systems.",
     icon: "🏥",
-    features: ["Laparoscopic Surgery", "Emergency Surgery", "Minimal Invasive Procedures"],
-    additionalInfo: "Our surgical team has over 20 years of combined experience and performs over 500 successful procedures annually."
+    features: ["Appointment Scheduling", "Patient Registration", "Front Desk Management", "Insurance Desk", "Patient Feedback"],
+    additionalInfo: "Our front office modules ensure smooth patient flow and efficient administrative operations."
   },
   {
-    title: "Pediatrics",
-    shortDescription: "Comprehensive healthcare for children from birth through adolescence.",
-    fullDescription: "Pediatrics focuses on children's health, development, and medical care needs from birth through adolescence. We provide a child-friendly environment with specialized care tailored to each developmental stage.",
-    icon: "👶",
-    features: ["Child Development", "Vaccination", "Growth Monitoring"],
-    additionalInfo: "Our pediatric department features colorful, child-friendly facilities and experienced pediatricians who specialize in various childhood conditions."
+    title: "Clinical Management",
+    shortDescription: "Complete clinical operations from casualty to specialized care units.",
+    fullDescription: "Manage all clinical operations efficiently with modules covering casualty management, medical records department (MRD), care desk operations, doctors desk for outpatient and inpatient care, dialysis services, and theatre management.",
+    icon: "👨‍⚕️",
+    features: ["Casualty Management", "Medical Records", "Care Desk", "Doctors Desk", "Dialysis", "Theatre Management"],
+    additionalInfo: "Our clinical modules provide comprehensive tools for healthcare professionals to deliver quality care."
   },
   {
-    title: "Gynaecology & Obstetrics",
-    shortDescription: "Complete women's health care including pregnancy and reproductive health.",
-    fullDescription: "Comprehensive women's health care including pregnancy, childbirth, and reproductive health issues. We provide personalized care throughout every stage of a woman's life.",
-    icon: "👩‍⚕️",
-    features: ["Prenatal Care", "Delivery Services", "Women's Health"],
-    additionalInfo: "Our department offers state-of-the-art facilities for prenatal care, safe deliveries, and comprehensive women's health services."
+    title: "In-Patient Management",
+    shortDescription: "Complete inpatient care management and nursing station operations.",
+    fullDescription: "Comprehensive inpatient care management including patient admission, nursing station operations, doctors desk for inpatient care, and complete patient monitoring throughout their stay.",
+    icon: "🛏️",
+    features: ["Patient Admission", "Nursing Station", "Doctors Desk IP", "Patient Monitoring", "Care Coordination"],
+    additionalInfo: "Our inpatient modules ensure seamless care coordination and patient safety throughout hospitalization."
   },
   {
-    title: "Vascular Surgery",
-    shortDescription: "Treatment of blood vessel disorders with modern surgical techniques.",
-    fullDescription: "Vascular Surgery treats blood vessel disorders, including arteries and veins with modern surgical techniques. We use advanced imaging and minimally invasive procedures for optimal results.",
-    icon: "🫀",
-    features: ["Varicose Veins", "Aneurysm Treatment", "Blood Flow Issues"],
-    additionalInfo: "Our vascular surgery team uses cutting-edge technology including laser therapy and endovascular procedures."
-  },
-  {
-    title: "Orthopedics",
-    shortDescription: "Specialized care for bones, joints, and musculoskeletal system.",
-    fullDescription: "Specializes in bones, joints, muscles and musculoskeletal system treatment with advanced orthopedic care. We provide both surgical and non-surgical treatment options.",
-    icon: "🦴",
-    features: ["Joint Replacement", "Sports Injuries", "Fracture Treatment"],
-    additionalInfo: "Our orthopedic department features advanced rehabilitation facilities and experienced physiotherapists for complete recovery."
-  },
-  {
-    title: "Neurology",
-    shortDescription: "Diagnosis and treatment of nervous system disorders.",
-    fullDescription: "Specializing in diagnosing and treating nervous system disorders with cutting-edge neurological care. We use advanced diagnostic tools and treatment protocols.",
-    icon: "🧠",
-    features: ["Stroke Treatment", "Epilepsy Management", "Neurological Disorders"],
-    additionalInfo: "Our neurology department is equipped with advanced MRI and CT scanning facilities for accurate diagnosis."
-  },
-  {
-    title: "Physiotherapy",
-    shortDescription: "Movement and function restoration through physical therapy.",
-    fullDescription: "Physiotherapy restores movement and function through exercises and physical techniques for rehabilitation. We create personalized treatment plans for each patient.",
-    icon: "💪",
-    features: ["Rehabilitation", "Pain Management", "Movement Therapy"],
-    additionalInfo: "Our physiotherapy department features modern equipment and experienced therapists for comprehensive rehabilitation."
-  },
-  {
-    title: "Urology",
-    shortDescription: "Treatment of urinary tract and male reproductive system disorders.",
-    fullDescription: "Specializing in treating urinary tract and male reproductive system disorders with expert care. We provide both medical and surgical treatment options.",
+    title: "Diagnosis Management",
+    shortDescription: "Laboratory, radiology, and diagnostic services management.",
+    fullDescription: "Complete diagnostic services management including blood bank operations, laboratory results management, radiology reports, and comprehensive diagnostic workflow management.",
     icon: "🔬",
-    features: ["Kidney Stones", "Prostate Care", "Urinary Issues"],
-    additionalInfo: "Our urology department uses advanced laser technology for kidney stone treatment and minimally invasive procedures."
+    features: ["Blood Bank", "Lab Results", "Radiology Reports", "Diagnostic Workflow", "Result Management"],
+    additionalInfo: "Our diagnostic modules ensure accurate and timely delivery of test results and reports."
   },
   {
-    title: "Gastroenterology",
-    shortDescription: "Digestive system disorders and gastrointestinal tract health.",
-    fullDescription: "Gastroenterology focuses on digestive system disorders and gastrointestinal tract health. We provide comprehensive diagnostic and treatment services.",
-    icon: "🏥",
-    features: ["Endoscopy", "Digestive Disorders", "Liver Care"],
-    additionalInfo: "Our gastroenterology department features advanced endoscopy suites and specialized liver care facilities."
+    title: "General Management",
+    shortDescription: "Billing, pharmacy, collection, and store management operations.",
+    fullDescription: "Comprehensive general management covering laboratory and general billing, pharmacy billing, collection management, store operations, and indent management for efficient resource utilization.",
+    icon: "💰",
+    features: ["Lab & General Billing", "Pharmacy Billing", "Collection Management", "Store Management", "Indent Management"],
+    additionalInfo: "Our general management modules optimize financial operations and resource management."
   },
   {
-    title: "ENT (Ear, Nose, Throat)",
-    shortDescription: "Treatment of sensory and airway disorders.",
-    fullDescription: "Specializing in ENT treats related sensory and airway disorders with comprehensive care. We provide both medical and surgical treatment options.",
-    icon: "👂",
-    features: ["Hearing Tests", "Sinus Treatment", "Throat Disorders"],
-    additionalInfo: "Our ENT department features advanced hearing testing facilities and specialized treatment for complex cases."
+    title: "Administration",
+    shortDescription: "Administrative operations and comprehensive reporting systems.",
+    fullDescription: "Complete administrative control with admin modules, MIS reports, finance and FA interface, and comprehensive administrative tools for hospital management and decision-making.",
+    icon: "📊",
+    features: ["Admin Operations", "MIS Reports", "Finance Interface", "Administrative Control", "Decision Support"],
+    additionalInfo: "Our administrative modules provide powerful tools for hospital management and strategic decision-making."
   },
   {
-    title: "Medicine Department",
-    shortDescription: "General medicine for disease diagnosis, treatment, and prevention.",
-    fullDescription: "General medicine helps in diagnosing, treating, and preventing diseases using comprehensive medical approaches. We provide primary care and specialized medical services.",
-    icon: "💊",
-    features: ["Internal Medicine", "Preventive Care", "Chronic Disease Management"],
-    additionalInfo: "Our medicine department provides comprehensive health screenings and preventive care programs."
+    title: "In-House Management",
+    shortDescription: "Housekeeping, laundry, and facility management services.",
+    fullDescription: "Complete in-house management including housekeeping operations, laundry services, and facility management to ensure clean and well-maintained hospital environment.",
+    icon: "🧹",
+    features: ["Housekeeping", "Laundry Services", "Facility Management", "Maintenance", "Quality Control"],
+    additionalInfo: "Our in-house management modules ensure high standards of cleanliness and facility maintenance."
   },
   {
-    title: "Emergency Care",
-    shortDescription: "24/7 emergency medical services for critical situations.",
-    fullDescription: "24/7 emergency medical services providing immediate care for critical and urgent medical situations. Our emergency department is staffed by experienced emergency medicine specialists.",
+    title: "Emergency Management",
+    shortDescription: "Comprehensive emergency and casualty management systems.",
+    fullDescription: "Complete emergency management including casualty operations, emergency response coordination, critical care management, and emergency patient tracking for optimal emergency care delivery.",
     icon: "🚨",
-    features: ["Trauma Care", "Critical Care", "Emergency Surgery"],
-    additionalInfo: "Our emergency department features advanced life support equipment and rapid response protocols."
+    features: ["Casualty Management", "Emergency Response", "Critical Care", "Patient Tracking", "Emergency Coordination"],
+    additionalInfo: "Our emergency modules ensure rapid response and efficient emergency care delivery."
+  },
+  {
+    title: "Patient Portal",
+    shortDescription: "Comprehensive patient self-service portal for enhanced patient experience.",
+    fullDescription: "Transform your hospital website into a comprehensive patient platform with online appointment booking, medical record access, test results viewing, and family member management under a common user ID.",
+    icon: "💻",
+    features: ["Online Appointments", "Medical Records", "Test Results", "Family Management", "Digital Services"],
+    additionalInfo: "Our patient portal enhances patient experience and reduces administrative workload."
+  },
+  {
+    title: "Mobile App",
+    shortDescription: "Patient care appointment booking mobile application.",
+    fullDescription: "Seamless mobile experience for patients with easy appointment booking, video consultations, secure payments, lab results access, and family member management through a branded mobile application.",
+    icon: "📱",
+    features: ["Appointment Booking", "Video Consultations", "Secure Payments", "Lab Results", "Family Management"],
+    additionalInfo: "Our mobile app can be customized for hospital branding and launched on Google Play Store and Apple Store."
+  },
+  {
+    title: "WhatsApp Integration",
+    shortDescription: "Advanced WhatsApp integration for enhanced communication.",
+    fullDescription: "Comprehensive WhatsApp integration for appointment scheduling, lab result access, invoice sharing, and automated messaging including welcome messages, confirmations, and reminders.",
+    icon: "💬",
+    features: ["Appointment Scheduling", "Lab Results", "Invoice Sharing", "Automated Messages", "Secure Communication"],
+    additionalInfo: "Our WhatsApp integration provides convenient, secure, and cost-effective communication channels."
+  },
+  {
+    title: "Teleconsultation",
+    shortDescription: "Vconsult teleconsultation solution for remote healthcare delivery.",
+    fullDescription: "Advanced teleconsultation solution with one-to-one video interaction, low bandwidth HD video, seamless EMR integration, payment gateway integration, and automated e-prescription facility.",
+    icon: "📹",
+    features: ["Video Consultations", "HD Video", "EMR Integration", "Payment Gateway", "E-Prescriptions"],
+    additionalInfo: "Our teleconsultation solution enables doctors to consult patients from anywhere, anytime."
   }
 ];
 
@@ -111,10 +111,10 @@ const Services = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">
-            Our Specialized Departments
+            TAJPE Comprehensive Modules
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Our specialized departments work together seamlessly to provide comprehensive healthcare services with the highest standards of medical excellence.
+            42+ modules for end-to-end hospital efficiency. Choose the right modules for your healthcare facility to achieve functional stability and operational excellence.
           </p>
         </div>
 
@@ -195,7 +195,7 @@ const Services = () => {
         {/* Additional Services Section */}
         <div className="mt-16 bg-white rounded-lg shadow-lg p-8">
           <h3 className="text-3xl font-bold text-center text-gray-800 mb-8">
-            Additional Healthcare Services
+            Optional Modules for Enhanced Operations
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center p-4">

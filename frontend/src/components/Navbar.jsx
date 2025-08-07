@@ -1,14 +1,55 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // This would typically come from auth context
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  // Check authentication status on component mount and when localStorage changes
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const authToken = localStorage.getItem("authToken");
+      const adminToken = localStorage.getItem("adminToken");
+      const userData = localStorage.getItem("user");
+      const adminData = localStorage.getItem("admin");
+      
+      if (authToken || adminToken) {
+        setIsLoggedIn(true);
+        setUser(userData ? JSON.parse(userData) : (adminData ? JSON.parse(adminData) : null));
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
+      }
+    };
+
+    checkAuthStatus();
+    
+    // Listen for storage changes (when user logs in/out from other components)
+    window.addEventListener('storage', checkAuthStatus);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuthStatus);
+    };
+  }, []);
 
   const handleLogout = () => {
-    // Add your logout logic here
+    // Clear all authentication data
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("user");
+    localStorage.removeItem("admin");
+    
     setIsLoggedIn(false);
+    setUser(null);
     setIsMenuOpen(false);
+    
+    // Redirect to home page
+    navigate("/");
+    
+    // Trigger storage event for other components
+    window.dispatchEvent(new Event('storage'));
   };
 
   return (
@@ -23,8 +64,8 @@ const Navbar = () => {
               </svg>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-teal-700">MEDICARE</h1>
-              <p className="text-sm text-gray-600">Excellence in Healthcare</p>
+              <h1 className="text-2xl font-bold text-teal-700">TAJPE</h1>
+              <p className="text-sm text-gray-600">Hospital Management System</p>
             </div>
           </Link>
 
@@ -38,12 +79,17 @@ const Navbar = () => {
             
             {/* Conditional rendering for auth buttons */}
             {isLoggedIn ? (
-              <button 
-                onClick={handleLogout}
-                className="text-gray-700 hover:text-teal-600 font-medium transition"
-              >
-                Logout
-              </button>
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-gray-600">
+                  Welcome, {user?.name || user?.username || 'User'}
+                </span>
+                                 <button 
+                   onClick={handleLogout}
+                   className="bg-gray-600 text-white px-4 py-2 rounded-md font-medium hover:bg-gray-700 transition"
+                 >
+                   Logout
+                 </button>
+              </div>
             ) : (
               <>
                 <Link to="/login" className="text-gray-700 hover:text-teal-600 font-medium transition">Login</Link>
@@ -79,12 +125,17 @@ const Navbar = () => {
               
               {/* Conditional rendering for auth buttons in mobile */}
               {isLoggedIn ? (
-                <button 
-                  onClick={handleLogout}
-                  className="text-gray-700 hover:text-teal-600 font-medium text-left"
-                >
-                  Logout
-                </button>
+                <div className="space-y-2">
+                  <div className="text-sm text-gray-600 text-center">
+                    Welcome, {user?.name || user?.username || 'User'}
+                  </div>
+                                     <button 
+                     onClick={handleLogout}
+                     className="w-full bg-gray-600 text-white px-4 py-2 rounded-md font-medium hover:bg-gray-700 transition"
+                   >
+                     Logout
+                   </button>
+                </div>
               ) : (
                 <>
                   <Link to="/login" className="text-gray-700 hover:text-teal-600 font-medium" onClick={() => setIsMenuOpen(false)}>Login</Link>

@@ -7,87 +7,87 @@ const Gallery = () => {
   const galleryItems = [
     {
       id: 1,
-      category: "facilities",
-      image: "/images/reception.jpg",
-      title: "Modern Reception Area",
-      description: "Our welcoming reception area designed for patient comfort",
+      category: "modules",
+      image: "/images/hospital_management.webp",
+      title: "Front Office Management",
+      description: "Comprehensive appointment scheduling and patient registration system",
     },
     {
       id: 2,
-      category: "equipment",
-      image: "/images/gallery-surgery.jpg",
-      title: "Advanced Surgical Equipment",
-      description: "State-of-the-art surgical technology for precise procedures",
+      category: "modules",
+      image: "/images/clinic-mng.png",
+      title: "Clinical Management",
+      description: "Complete clinical operations from casualty to specialized care units",
     },
     {
       id: 3,
       category: "team",
-      image: "/images/medical-team.jpg",
-      title: "Expert Medical Team",
-      description: "Our dedicated healthcare professionals",
+      image: "/images/support.jpg",
+      title: "Expert Support Team",
+      description: "Our dedicated technical support and implementation specialists",
     },
     {
       id: 4,
-      category: "facilities",
+      category: "modules",
       image: "/images/gallery-patient-room.jpg",
-      title: "Patient Rooms",
-      description: "Comfortable and modern patient accommodation",
+      title: "In-Patient Management",
+      description: "Complete inpatient care management and nursing station operations",
     },
     {
       id: 5,
-      category: "equipment",
+      category: "modules",
       image: "/images/recovery.jpg",
-      title: "Diagnostic Equipment",
-      description: "Advanced diagnostic imaging and testing equipment",
+      title: "Diagnosis Management",
+      description: "Laboratory, radiology, and diagnostic services management",
     },
     {
       id: 6,
-      category: "patients",
+      category: "features",
       image: "/images/gallery-patient-care.jpg",
-      title: "Patient Care",
-      description: "Compassionate care in a healing environment",
+      title: "Patient Portal",
+      description: "Comprehensive patient self-service portal for enhanced experience",
     },
     {
       id: 7,
-      category: "facilities",
+      category: "modules",
       image: "/images/gallery-emergency.jpg",
-      title: "Emergency Department",
-      description: "24/7 emergency care facilities",
+      title: "Emergency Management",
+      description: "Comprehensive emergency and casualty management systems",
     },
     {
       id: 8,
-      category: "equipment",
+      category: "modules",
       image: "/images/laboratory.jpg",
-      title: "Laboratory Equipment",
-      description: "State-of-the-art laboratory testing facilities",
+      title: "General Management",
+      description: "Billing, pharmacy, collection, and store management operations",
     },
     {
       id: 9,
       category: "team",
       image: "/images/specialist.jpg",
-      title: "Specialist Consultation",
-      description: "Expert consultations with our specialists",
+      title: "Technical Specialists",
+      description: "Expert consultations with our implementation specialists",
     },
     {
       id: 10,
-      category: "facilities",
+      category: "modules",
       image: "/images/pharmasy.jpg",
-      title: "Hospital Pharmacy",
-      description: "Modern pharmacy with comprehensive medication services",
+      title: "Administration",
+      description: "Administrative operations and comprehensive reporting systems",
     },
     {
       id: 11,
-      category: "equipment",
-      image: "/images/equipment.jpg",
-      title: "Emergency Equipment",
-      description: "Advanced emergency care facilities and equipment",
+      category: "features",
+      image: "/images/mobile-app.webp",
+      title: "Mobile App",
+      description: "Patient care appointment booking mobile application",
     },
     {
       id: 12,
-      category: "patients",
+      category: "features",
       image: "/images/recovery.jpg",
-      title: "Patient Recovery",
-      description: "Dedicated recovery areas for patient rehabilitation",
+      title: "WhatsApp Integration",
+      description: "Advanced WhatsApp integration for enhanced communication",
     },
   ];
 
@@ -98,14 +98,14 @@ const Gallery = () => {
 
   return (
     <div className="py-14 px-4 bg-gray-50 min-h-screen">
-      <h2 className="text-3xl font-bold text-center text-gray-800 mb-8"> MEDICARE by the Numbers</h2>
- <p className="text-xl text-gray-600 max-w-3xl mb-7 mx-auto">
-            Take a virtual tour of our state-of-the-art facilities, advanced medical equipment, 
-            and meet our dedicated healthcare team at MEDICARE.
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">TAJPE Modules & Features</h2>
+      <p className="text-xl text-gray-600 max-w-3xl mb-7 mx-auto">
+            Explore our comprehensive Hospital Management System modules, features, and meet our dedicated 
+            technical support team at TAJPE.
           </p>
 
       <div className="flex justify-center mb-8 flex-wrap gap-2">
-        {["all", "facilities", "equipment", "team", "patients"].map((cat) => (
+        {["all", "modules", "features", "team"].map((cat) => (
           <button
             key={cat}
             className={`px-5 py-2 rounded-full border font-medium transition ${

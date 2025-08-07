@@ -38,24 +38,24 @@ const Contact = () => {
 
   const testimonials = [
     {
-      name: "Rahul Verma",
+      name: "Dr. Rajesh Kumar",
       rating: 5,
-      text: "MEDICARE has been exceptional in providing care for my family. The doctors are highly skilled and the facilities are world-class. The staff is very professional and caring."
+      text: "TAJPE has transformed our hospital operations completely. The comprehensive modules cover every aspect of patient care and administration. Highly recommended!"
     },
     {
-      name: "Anjali Singh",
+      name: "Sarah Johnson",
       rating: 5,
-      text: "I had a complex surgery at MEDICARE and the entire experience was outstanding. Dr. Patel and his team were amazing. The post-operative care was excellent."
+      text: "As a hospital administrator, TAJPE has streamlined our processes significantly. The patient portal and mobile app features have greatly enhanced patient satisfaction."
     },
     {
-      name: "Vikram Mehta",
+      name: "Dr. Ahmed Hassan",
       rating: 5,
-      text: "The emergency care at MEDICARE saved my life. The response time was incredible and the medical team was highly professional. I'm grateful for their expertise."
+      text: "The WhatsApp integration and teleconsultation features have revolutionized how we connect with patients. TAJPE's support team is exceptional."
     },
     {
-      name: "Priya Gupta",
+      name: "Maria Rodriguez",
       rating: 5,
-      text: "As a regular patient at MEDICARE, I can say they truly care about their patients. The facilities are modern, clean, and the medical staff is very knowledgeable."
+      text: "We've been using TAJPE for 3 years now. The scalability and comprehensive modules make it perfect for hospitals of any size. Excellent ROI!"
     }
   ];
 
@@ -64,10 +64,10 @@ const Contact = () => {
       <div className="container mx-auto px-4">
         {/* Contact Information */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6">Contact Us</h2>
+          <h2 className="text-4xl font-bold text-gray-800 mb-6">Contact TAJPE</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Get in touch with MEDICARE for appointments, consultations, or any healthcare-related inquiries. 
-            Our dedicated team is here to provide you with the best medical care and support.
+            Get in touch with TAJPE for Hospital Management System demonstrations, consultations, 
+            or any healthcare technology-related inquiries. Our dedicated team is here to help you transform your hospital operations.
           </p>
         </div>
 
@@ -122,14 +122,18 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Select Department</option>
-                    <option value="general">General Medicine</option>
-                    <option value="surgery">General Surgery</option>
-                    <option value="pediatrics">Pediatrics</option>
-                    <option value="gynecology">Gynecology</option>
-                    <option value="orthopedics">Orthopedics</option>
-                    <option value="neurology">Neurology</option>
-                    <option value="emergency">Emergency Care</option>
+                                         <option value="">Select Module</option>
+                     <option value="front-office">Front Office Management</option>
+                     <option value="clinical">Clinical Management</option>
+                     <option value="inpatient">In-Patient Management</option>
+                     <option value="diagnosis">Diagnosis Management</option>
+                     <option value="general">General Management</option>
+                     <option value="administration">Administration</option>
+                     <option value="patient-portal">Patient Portal</option>
+                     <option value="mobile-app">Mobile App</option>
+                     <option value="whatsapp">WhatsApp Integration</option>
+                     <option value="teleconsultation">Teleconsultation</option>
+                     <option value="demo">Request Demo</option>
                   </select>
                 </div>
                 <textarea
@@ -163,9 +167,9 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Phone</h4>
-                    <p className="text-gray-600">+91-9876543210</p>
-                    <p className="text-gray-600">Emergency: 24/7 Available</p>
+                                         <h4 className="font-semibold text-gray-800 mb-1">Phone</h4>
+                     <p className="text-gray-600">INDIA: +91 9048767111</p>
+                     <p className="text-gray-600">UAE: +971 56 690 7222</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -176,8 +180,9 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Email</h4>
-                    <p className="text-gray-600">info@medicare.com</p>
+                                         <h4 className="font-semibold text-gray-800 mb-1">Email</h4>
+                                       <p className="text-gray-600">sales@tajpe.com</p>
+                  <p className="text-gray-600">support@tajpe.com</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -187,12 +192,13 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Address</h4>
-                    <p className="text-gray-600">
-                      123 Healthcare Avenue, Medical District,<br />
-                      City Center, State 123456<br />
-                      India
-                    </p>
+                                         <h4 className="font-semibold text-gray-800 mb-1">Address</h4>
+                                       <p className="text-gray-600">
+                    TAJPE<br />
+                    9/826/ C, 11-12 5th Floor, Meda,<br />
+                    Seaport Airport Road, Kakkanad,<br />
+                    Kochi – 682 030, Ernakulam, India
+                  </p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -202,9 +208,9 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-1">Working Hours</h4>
-                    <p className="text-gray-600">Monday - Sunday: 24/7</p>
-                    <p className="text-gray-600">Emergency Services: Always Available</p>
+                                         <h4 className="font-semibold text-gray-800 mb-1">Working Hours</h4>
+                     <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                     <p className="text-gray-600">Support: support@tajpe.com</p>
                   </div>
                 </div>
               </div>
@@ -214,9 +220,9 @@ const Contact = () => {
 
         {/* Testimonials Section */}
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            What Our Patients Say
-          </h3>
+                     <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">
+             What Our Clients Say
+           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             {testimonials.map((testimonial, idx) => (
               <div key={idx} className="bg-gray-50 rounded-lg p-6">

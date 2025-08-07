@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -13,11 +12,11 @@ const Chatbot = () => {
 
   // Quick reply suggestions
   const quickReplies = [
-    "What are your services?",
-    "How can I book an appointment?",
-    "What are your visiting hours?",
-    "Do you accept insurance?",
-    "What emergency services do you provide?"
+    "What modules do you offer?",
+    "Can I get a demo?",
+    "What is the pricing?",
+    "How can I contact you?",
+    "What features are included?"
   ];
 
   const scrollToBottom = () => {
@@ -406,20 +405,6 @@ const Chatbot = () => {
         </div>
         <div style={{ display: "flex", gap: "5px" }}>
           <button
-            onClick={() => setIsMinimized(!isMinimized)}
-            style={{
-              background: "rgba(255,255,255,0.2)",
-              border: "none",
-              color: "white",
-              padding: "5px",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: "12px"
-            }}
-          >
-            {isMinimized ? "□" : "−"}
-          </button>
-          <button
             onClick={() => setIsOpen(false)}
             style={{
               background: "rgba(255,255,255,0.2)",
@@ -437,10 +422,9 @@ const Chatbot = () => {
       </div>
 
       {/* Chat Content */}
-      {!isMinimized && (
-        <>
-          {showLoginPrompt()}
-          {showQuickReplies()}
+      <>
+        {showLoginPrompt()}
+        {showQuickReplies()}
           
           {/* Messages */}
           {messages.length > 0 && (
@@ -559,7 +543,6 @@ const Chatbot = () => {
             </div>
           )}
         </>
-      )}
 
       <style jsx>{`
         @keyframes pulse {

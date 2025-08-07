@@ -23,13 +23,13 @@ function Home() {
           
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            Advanced Healthcare 
-            <span className="block text-cyan-200">for Modern Life</span>
+            Unlock New Heights of 
+            <span className="block text-cyan-200">Hospital Excellence</span>
           </h1>
           
           <p className="text-xl md:text-2xl mb-10 max-w-4xl mx-auto leading-relaxed opacity-90">
-            Welcome to <span className="font-semibold">MEDICARE</span>, where cutting-edge medical technology meets compassionate care. 
-            Experience world-class healthcare in a warm, welcoming environment.
+            Experience <span className="font-semibold">TAJPE</span>, the comprehensive Hospital Management System. 
+            Choose the right version for your hospital size and transform your healthcare operations.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
@@ -60,19 +60,19 @@ function Home() {
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span>Certified Medical Professionals</span>
+              <span>42+ Comprehensive Modules</span>
             </div>
             <div className="flex items-center">
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span>State-of-the-Art Facilities</span>
+              <span>550+ Clients Worldwide</span>
             </div>
             <div className="flex items-center">
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span>24/7 Emergency Care</span>
+              <span>30+ Years Experience</span>
             </div>
           </div>
         </div>
@@ -83,10 +83,10 @@ function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Why Choose MEDICARE?
+              Why Choose TAJPE?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Our commitment to excellence is reflected in our impressive track record and patient satisfaction.
+              Our comprehensive Hospital Management System is trusted by healthcare facilities worldwide for operational excellence.
             </p>
           </div>
           
@@ -97,8 +97,8 @@ function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
-              <div className="text-4xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform duration-300">1000+</div>
-              <div className="text-gray-600 font-medium">Patients Treated</div>
+              <div className="text-4xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform duration-300">42+</div>
+              <div className="text-gray-600 font-medium">Comprehensive Modules</div>
             </div>
             
             <div className="text-center group">
@@ -107,8 +107,8 @@ function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
-              <div className="text-4xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform duration-300">98%</div>
-              <div className="text-gray-600 font-medium">Satisfaction Rate</div>
+              <div className="text-4xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform duration-300">550+</div>
+              <div className="text-gray-600 font-medium">Clients Worldwide</div>
             </div>
             
             <div className="text-center group">
@@ -117,8 +117,8 @@ function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div className="text-4xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform duration-300">15+</div>
-              <div className="text-gray-600 font-medium">Years of Excellence</div>
+              <div className="text-4xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform duration-300">30+</div>
+              <div className="text-gray-600 font-medium">Years Experience</div>
             </div>
             
             <div className="text-center group">
@@ -127,8 +127,8 @@ function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div className="text-4xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform duration-300">24/7</div>
-              <div className="text-gray-600 font-medium">Emergency Care</div>
+              <div className="text-4xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform duration-300">4</div>
+              <div className="text-gray-600 font-medium">Hospital Versions</div>
             </div>
           </div>
         </div>
@@ -139,10 +139,10 @@ function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              What Sets Us Apart
+              What Sets TAJPE Apart
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover the unique features that make MEDICARE the preferred choice for healthcare.
+              Discover the comprehensive features that make TAJPE the preferred choice for hospital management.
             </p>
           </div>
           
@@ -153,9 +153,9 @@ function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Expert Medical Team</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Comprehensive Modules</h3>
               <p className="text-gray-600 leading-relaxed">
-                Our team of highly qualified doctors and medical professionals are committed to providing the best possible care for our patients.
+                42+ modules covering every aspect of hospital operations from appointment scheduling to discharge management.
               </p>
             </div>
             
@@ -165,9 +165,9 @@ function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Advanced Technology</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Scalable Solutions</h3>
               <p className="text-gray-600 leading-relaxed">
-                State-of-the-art medical equipment and cutting-edge technology ensure accurate diagnoses and effective treatments.
+                Choose from 4 versions: Clinic, Pro (up to 50 beds), Prime (up to 100 beds), and Premium (200+ beds).
               </p>
             </div>
             
@@ -177,9 +177,9 @@ function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Patient-Centered Care</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Proven Track Record</h3>
               <p className="text-gray-600 leading-relaxed">
-                We prioritize patient comfort and well-being, providing personalized care in a warm and welcoming environment.
+                Trusted by 550+ clients worldwide with 30+ years of experience in healthcare technology solutions.
               </p>
             </div>
           </div>

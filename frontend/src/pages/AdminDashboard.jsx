@@ -195,6 +195,10 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("admin");
+    
+    // Trigger storage event to update navbar
+    window.dispatchEvent(new Event('storage'));
+    
     navigate("/login");
   };
 
@@ -229,7 +233,7 @@ const AdminDashboard = () => {
             </span>
             <button
               onClick={handleLogout}
-              className="bg-white bg-opacity-20 hover:bg-opacity-40 px-4 py-2 rounded-lg font-semibold transition-all"
+              className="bg-black bg-opacity-20 hover:bg-opacity-40 px-4 py-2 rounded-lg font-semibold transition-all"
             >
               Logout
             </button>

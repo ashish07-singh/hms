@@ -20,26 +20,30 @@ import AdminDashboard from "./pages/AdminDashboard";
 const App = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          <Route path="/cookie-policy" element={<CookiePolicy />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        </Routes>
-      </main>
-      <Footer />
-      <Chatbot />
+      <Routes>
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="*" element={
+          <>
+            <Navbar />
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
+              </Routes>
+            </main>
+            <Footer />
+            <Chatbot />
+          </>
+        } />
+      </Routes>
     </div>
   );
 };

@@ -66,6 +66,8 @@ A full-stack hospital management web application built with React (frontend) and
 5. **Access the app:**
    - Frontend: [http://localhost:5173](http://localhost:5173)
    - Backend: [http://localhost:5000](http://localhost:5000)
+   - admin: [http://localhost:5000/admin](http://localhost:5000/admin)
+
 
 ## License
 

@@ -39,23 +39,85 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          withCredentials: true
+      // Check email domain for routing
+      const emailDomain = formData.email.split('@')[1];
+      const isAdminEmail = emailDomain === 'webarclight.com';
+      
+      if (isAdminEmail) {
+        // Try admin login first
+        try {
+          const { data } = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/api/admin/login`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              withCredentials: true
+            }
+          );
+
+          // Store admin token and data
+          localStorage.setItem('adminToken', data.token);
+          localStorage.setItem('admin', JSON.stringify(data.admin));
+
+          toast.success('Admin login successful!');
+          navigate('/admin/dashboard');
+          return; // Exit early if admin login succeeds
+        } catch (adminErr) {
+          console.log('Admin login failed, trying regular user login...');
+          // Continue to regular user login below
         }
-      );
+        
+        // If admin login failed, try regular user login
+        try {
+          const { data } = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              withCredentials: true
+            }
+          );
 
-      // Store token and user data
-      localStorage.setItem('authToken', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+          // Store as admin token for webarclight.com emails (even if they're regular users)
+          localStorage.setItem('adminToken', data.token);
+          localStorage.setItem('admin', JSON.stringify({
+            id: data.user._id,
+            username: data.user.name,
+            email: data.user.email,
+            role: 'admin'
+          }));
 
-      toast.success('Login successful!');
-      navigate('/');
+          toast.success('Login successful!');
+          navigate('/admin/dashboard'); // Still redirect to admin dashboard for webarclight.com emails
+          return; // Exit early if regular user login succeeds
+        } catch (userErr) {
+          // If both admin and user login fail, throw the error
+          throw userErr;
+        }
+      } else {
+        // Regular user login
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            withCredentials: true
+          }
+        );
+
+        // Store token and user data
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        toast.success('Login successful!');
+        navigate('/');
+      }
 
     } catch (err) {
       const errorMsg = err.response?.data?.message || 

@@ -55,6 +55,8 @@ const Navbar = () => {
                 </Link>
               </>
             )}
+            
+
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,6 +97,8 @@ const Navbar = () => {
                   </Link>
                 </>
               )}
+              
+
             </div>
           </div>
         )}

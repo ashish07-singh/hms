@@ -11,6 +11,15 @@ const Chatbot = () => {
   const [userEmail, setUserEmail] = useState('');
   const messagesEndRef = useRef(null);
 
+  // Quick reply suggestions
+  const quickReplies = [
+    "What are your services?",
+    "How can I book an appointment?",
+    "What are your visiting hours?",
+    "Do you accept insurance?",
+    "What emergency services do you provide?"
+  ];
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -104,11 +113,14 @@ const Chatbot = () => {
         setSessionId(data.sessionId);
       }
       
-      setMessages(prev => [...prev, { 
-        from: "bot", 
-        text: data.reply,
-        timestamp: new Date()
-      }]);
+      // Only add bot response if there is one
+      if (data.reply) {
+        setMessages(prev => [...prev, { 
+          from: "bot", 
+          text: data.reply,
+          timestamp: new Date()
+        }]);
+      }
     } catch (error) {
       console.error('Chatbot error:', error);
       setMessages(prev => [
@@ -122,6 +134,64 @@ const Chatbot = () => {
     } finally {
       setIsLoading(false);
       setInput("");
+    }
+  };
+
+  const handleQuickReply = async (question) => {
+    const userMsg = { 
+      from: "user", 
+      text: question,
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, userMsg]);
+    setIsLoading(true);
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/chatbot`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            message: question,
+            sessionId: sessionId,
+            email: userEmail,
+            userId: userId
+          }),
+        }
+      );
+      
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      const data = await res.json();
+      
+      // Update session ID if provided
+      if (data.sessionId) {
+        setSessionId(data.sessionId);
+      }
+      
+      // Only add bot response if there is one
+      if (data.reply) {
+        setMessages(prev => [...prev, { 
+          from: "bot", 
+          text: data.reply,
+          timestamp: new Date()
+        }]);
+      }
+    } catch (error) {
+      console.error('Chatbot error:', error);
+      setMessages(prev => [
+        ...prev,
+        { 
+          from: "bot", 
+          text: "Sorry, I'm having trouble connecting right now. Please try again.",
+          timestamp: new Date()
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -175,6 +245,75 @@ const Chatbot = () => {
             >
               Register
             </button>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const showQuickReplies = () => {
+    if (userId && messages.length === 0) {
+      return (
+        <div style={{
+          padding: "15px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px"
+        }}>
+          <div style={{
+            padding: "12px 16px",
+            borderRadius: "18px",
+            background: "#f8f9fa",
+            border: "1px solid #e9ecef",
+            color: "#333",
+            maxWidth: "80%",
+            alignSelf: "flex-start"
+          }}>
+            <div style={{ marginBottom: "8px", fontWeight: "600" }}>
+              Welcome! How can I help you today?
+            </div>
+          </div>
+          
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+            marginTop: "10px"
+          }}>
+            {quickReplies.map((reply, index) => (
+              <button
+                key={index}
+                onClick={() => handleQuickReply(reply)}
+                disabled={isLoading}
+                style={{
+                  padding: "10px 16px",
+                  background: "white",
+                  border: "1px solid #007bff",
+                  borderRadius: "20px",
+                  color: "#007bff",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  transition: "all 0.2s ease",
+                  opacity: isLoading ? 0.6 : 1
+                }}
+                onMouseEnter={(e) => {
+                  if (!isLoading) {
+                    e.target.style.background = "#007bff";
+                    e.target.style.color = "white";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isLoading) {
+                    e.target.style.background = "white";
+                    e.target.style.color = "#007bff";
+                  }
+                }}
+              >
+                {reply}
+              </button>
+            ))}
           </div>
         </div>
       );
@@ -301,77 +440,80 @@ const Chatbot = () => {
       {!isMinimized && (
         <>
           {showLoginPrompt()}
+          {showQuickReplies()}
           
           {/* Messages */}
-          <div style={{
-            flex: 1,
-            padding: "15px",
-            overflowY: "auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px"
-          }}>
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  justifyContent: message.from === "user" ? "flex-end" : "flex-start",
-                  marginBottom: "10px"
-                }}
-              >
-                <div style={{
-                  maxWidth: "80%",
-                  padding: "12px 16px",
-                  borderRadius: "18px",
-                  background: message.from === "user" ? "#007bff" : 
-                             message.from === "admin" ? "#28a745" : "#f8f9fa",
-                  color: message.from === "user" || message.from === "admin" ? "white" : "#333",
-                  border: message.from === "bot" ? "1px solid #e9ecef" : "none",
-                  position: "relative"
-                }}>
-                  <div style={{ marginBottom: "4px" }}>
-                    {message.text}
-                  </div>
+          {messages.length > 0 && (
+            <div style={{
+              flex: 1,
+              padding: "15px",
+              overflowY: "auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px"
+            }}>
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    justifyContent: message.from === "user" ? "flex-end" : "flex-start",
+                    marginBottom: "10px"
+                  }}
+                >
                   <div style={{
-                    fontSize: "11px",
-                    opacity: 0.7,
-                    textAlign: message.from === "user" ? "right" : "left"
+                    maxWidth: "80%",
+                    padding: "12px 16px",
+                    borderRadius: "18px",
+                    background: message.from === "user" ? "#007bff" : 
+                               message.from === "admin" ? "#28a745" : "#f8f9fa",
+                    color: message.from === "user" || message.from === "admin" ? "white" : "#333",
+                    border: message.from === "bot" ? "1px solid #e9ecef" : "none",
+                    position: "relative"
                   }}>
-                    {formatTime(message.timestamp)}
-                    {message.from === "admin" && " • Support Team"}
-                  </div>
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                marginBottom: "10px"
-              }}>
-                <div style={{
-                  padding: "12px 16px",
-                  borderRadius: "18px",
-                  background: "#f8f9fa",
-                  border: "1px solid #e9ecef",
-                  color: "#333"
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <div style={{ marginBottom: "4px" }}>
+                      {message.text}
+                    </div>
                     <div style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "50%",
-                      background: "#007bff",
-                      animation: "pulse 1.5s infinite"
-                    }}></div>
-                    Typing...
+                      fontSize: "11px",
+                      opacity: 0.7,
+                      textAlign: message.from === "user" ? "right" : "left"
+                    }}>
+                      {formatTime(message.timestamp)}
+                      {message.from === "admin" && " • Support Team"}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+              ))}
+              {isLoading && (
+                <div style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  marginBottom: "10px"
+                }}>
+                  <div style={{
+                    padding: "12px 16px",
+                    borderRadius: "18px",
+                    background: "#f8f9fa",
+                    border: "1px solid #e9ecef",
+                    color: "#333"
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div style={{
+                        width: "12px",
+                        height: "12px",
+                        borderRadius: "50%",
+                        background: "#007bff",
+                        animation: "pulse 1.5s infinite"
+                      }}></div>
+                      Typing...
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          )}
 
           {/* Input */}
           {userId && (

@@ -8,6 +8,7 @@ import connectDB from './config/db.js';
 import contactrouter from './routes/contactRoutes.js';
 import authroutes from './routes/authRoutes.js';
 import chatbotRoutes from "./routes/chatbotRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +20,7 @@ const app = express();
 // ✅ CORS middleware - Allow both ports
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'], // Allow both ports
+    origin: [process.env.CORS_ORIGIN || 'http://localhost:5173', 'http://localhost:5174'], // Allow both ports
     credentials: true,
   })
 );
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authroutes);
 app.use('/api/contact', contactrouter);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Serve admin interface
 app.get('/admin', (req, res) => {
@@ -47,6 +49,4 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
-  console.log(`🏥 Admin panel available at: http://localhost:${PORT}/admin`);
-  console.log(`🌐 CORS enabled for: http://localhost:5173 and http://localhost:5174`);
 });

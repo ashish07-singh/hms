@@ -38,13 +38,40 @@ const Signup = () => {
 
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-      toast.success("Registration successful! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 2000);
+      // Check email domain for routing
+      const emailDomain = formData.email.split('@')[1];
+      const isAdminEmail = emailDomain === 'webarclight.com';
+      
+      if (isAdminEmail) {
+        // Try admin signup first
+        try {
+          await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/admin/signup`, {
+            username: formData.name,
+            email: formData.email,
+            password: formData.password,
+          });
+          toast.success("Admin registration successful! Redirecting to admin login...");
+          setTimeout(() => navigate("/login"), 2000);
+        } catch (adminErr) {
+          // If admin signup fails, try regular user signup
+          await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+          });
+          toast.success("Registration successful! Redirecting to login...");
+          setTimeout(() => navigate("/login"), 2000);
+        }
+      } else {
+        // Regular user signup
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/register`, {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        });
+        toast.success("Registration successful! Redirecting to login...");
+        setTimeout(() => navigate("/login"), 2000);
+      }
     } catch (error) {
       toast.error(
         error.response?.data?.message || 

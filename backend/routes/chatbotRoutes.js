@@ -15,6 +15,7 @@ const autoResponses = {
   "pharmacy": "Our pharmacy is open Monday to Friday, 8 AM to 8 PM.",
   "lab": "Lab services are available Monday to Friday, 7 AM to 6 PM.",
   "covid": "COVID-19 testing is available. Please call 9876543210 to schedule.",
+  "services": "We offer a wide range of services including general medicine, surgery, pediatrics, gynecology, orthopedics, neurology, emergency care, laboratory services, and pharmacy. What specific service are you interested in?",
   "default": "Thank you for your message. Our support team will respond shortly."
 };
 
@@ -66,11 +67,13 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Auto-response based on keywords
-    let reply = autoResponses.default;
+    // Check for specific questions first
     const lowerMessage = message.toLowerCase();
+    let reply = "";
     
-    if (lowerMessage.includes("appointment") || lowerMessage.includes("book")) {
+    if (lowerMessage.includes("what are your services") || lowerMessage.includes("services")) {
+      reply = autoResponses.services;
+    } else if (lowerMessage.includes("appointment") || lowerMessage.includes("book")) {
       reply = autoResponses.appointment;
     } else if (lowerMessage.includes("billing") || lowerMessage.includes("payment")) {
       reply = autoResponses.billing;
@@ -88,17 +91,29 @@ router.post("/", async (req, res) => {
       reply = autoResponses.lab;
     } else if (lowerMessage.includes("covid")) {
       reply = autoResponses.covid;
+    } else {
+      // Check if default message was already sent in this session
+      const hasDefaultMessage = chat.messages.some(msg => 
+        msg.from === "bot" && msg.text === autoResponses.default
+      );
+      
+      // Only send the default message if it hasn't been sent yet in this session
+      if (!hasDefaultMessage) {
+        reply = autoResponses.default;
+      }
     }
 
-    // Add bot response
-    const botMessage = {
-      from: "bot",
-      text: reply,
-      timestamp: new Date()
-    };
-    
-    chat.messages.push(botMessage);
-    await chat.save();
+    // Add bot response if there is one
+    if (reply) {
+      const botMessage = {
+        from: "bot",
+        text: reply,
+        timestamp: new Date()
+      };
+      
+      chat.messages.push(botMessage);
+      await chat.save();
+    }
 
     res.json({ 
       reply,
@@ -129,71 +144,6 @@ router.get("/chat/:sessionId", async (req, res) => {
   }
 });
 
-// Admin: Get all active chats
-router.get("/admin/chats", async (req, res) => {
-  try {
-    const chats = await Chat.find({ isActive: true })
-      .populate('userId', 'name email phone')
-      .sort({ lastMessage: -1 });
-    
-    res.json({ chats });
-  } catch (error) {
-    console.error('Error getting chats:', error);
-    res.status(500).json({ error: 'Failed to get chats' });
-  }
-});
 
-// Admin: Send reply to a chat
-router.post("/admin/reply", async (req, res) => {
-  try {
-    const { sessionId, reply } = req.body;
-    
-    if (!sessionId || !reply) {
-      return res.status(400).json({ error: "Session ID and reply are required" });
-    }
-
-    const chat = await Chat.findOne({ sessionId });
-    if (!chat) {
-      return res.status(404).json({ error: "Chat session not found" });
-    }
-
-    // Add admin message
-    const adminMessage = {
-      from: "admin",
-      text: reply,
-      timestamp: new Date()
-    };
-    
-    chat.messages.push(adminMessage);
-    chat.lastMessage = new Date();
-    await chat.save();
-
-    // Update user's unread count if registered
-    if (chat.userId) {
-      await User.findByIdAndUpdate(chat.userId, {
-        $inc: { unreadMessages: 1 }
-      });
-    }
-
-    res.json({ 
-      success: true, 
-      message: "Reply sent successfully"
-    });
-  } catch (error) {
-    console.error('Error sending admin reply:', error);
-    res.status(500).json({ error: 'Failed to send reply' });
-  }
-});
-
-// Get all users for admin
-router.get("/admin/users", async (req, res) => {
-  try {
-    const users = await User.find({}).select('name email phone isOnline lastMessage unreadMessages chatSessionId');
-    res.json({ users });
-  } catch (error) {
-    console.error('Error getting users:', error);
-    res.status(500).json({ error: 'Failed to get users' });
-  }
-});
 
 export default router;

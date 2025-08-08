@@ -5,7 +5,7 @@ const departments = [
     title: "Front Office Management",
     shortDescription: "Comprehensive front office operations including appointment scheduling and patient registration.",
     fullDescription: "Streamline your front office operations with our comprehensive modules covering appointment scheduling, patient registration, front desk management, outpatient services, insurance desk operations, and patient feedback systems.",
-    icon: "🏥",
+    image: "/images/Front-Office-Management.png",
     features: ["Appointment Scheduling", "Patient Registration", "Front Desk Management", "Insurance Desk", "Patient Feedback"],
     additionalInfo: "Our front office modules ensure smooth patient flow and efficient administrative operations."
   },
@@ -13,7 +13,7 @@ const departments = [
     title: "Clinical Management",
     shortDescription: "Complete clinical operations from casualty to specialized care units.",
     fullDescription: "Manage all clinical operations efficiently with modules covering casualty management, medical records department (MRD), care desk operations, doctors desk for outpatient and inpatient care, dialysis services, and theatre management.",
-    icon: "👨‍⚕️",
+    image: "/images/Clinical-operations.png",
     features: ["Casualty Management", "Medical Records", "Care Desk", "Doctors Desk", "Dialysis", "Theatre Management"],
     additionalInfo: "Our clinical modules provide comprehensive tools for healthcare professionals to deliver quality care."
   },
@@ -21,7 +21,7 @@ const departments = [
     title: "In-Patient Management",
     shortDescription: "Complete inpatient care management and nursing station operations.",
     fullDescription: "Comprehensive inpatient care management including patient admission, nursing station operations, doctors desk for inpatient care, and complete patient monitoring throughout their stay.",
-    icon: "🛏️",
+    image: "/images/In-Patient-Management.png",
     features: ["Patient Admission", "Nursing Station", "Doctors Desk IP", "Patient Monitoring", "Care Coordination"],
     additionalInfo: "Our inpatient modules ensure seamless care coordination and patient safety throughout hospitalization."
   },
@@ -29,7 +29,7 @@ const departments = [
     title: "Diagnosis Management",
     shortDescription: "Laboratory, radiology, and diagnostic services management.",
     fullDescription: "Complete diagnostic services management including blood bank operations, laboratory results management, radiology reports, and comprehensive diagnostic workflow management.",
-    icon: "🔬",
+    image: "/images/Diagnosis-Management.png",
     features: ["Blood Bank", "Lab Results", "Radiology Reports", "Diagnostic Workflow", "Result Management"],
     additionalInfo: "Our diagnostic modules ensure accurate and timely delivery of test results and reports."
   },
@@ -37,7 +37,7 @@ const departments = [
     title: "General Management",
     shortDescription: "Billing, pharmacy, collection, and store management operations.",
     fullDescription: "Comprehensive general management covering laboratory and general billing, pharmacy billing, collection management, store operations, and indent management for efficient resource utilization.",
-    icon: "💰",
+    image: "/images/GeneralManagement.png",
     features: ["Lab & General Billing", "Pharmacy Billing", "Collection Management", "Store Management", "Indent Management"],
     additionalInfo: "Our general management modules optimize financial operations and resource management."
   },
@@ -45,7 +45,7 @@ const departments = [
     title: "Administration",
     shortDescription: "Administrative operations and comprehensive reporting systems.",
     fullDescription: "Complete administrative control with admin modules, MIS reports, finance and FA interface, and comprehensive administrative tools for hospital management and decision-making.",
-    icon: "📊",
+    image: "/images/Administration.png",
     features: ["Admin Operations", "MIS Reports", "Finance Interface", "Administrative Control", "Decision Support"],
     additionalInfo: "Our administrative modules provide powerful tools for hospital management and strategic decision-making."
   },
@@ -53,7 +53,7 @@ const departments = [
     title: "In-House Management",
     shortDescription: "Housekeeping, laundry, and facility management services.",
     fullDescription: "Complete in-house management including housekeeping operations, laundry services, and facility management to ensure clean and well-maintained hospital environment.",
-    icon: "🧹",
+    image: "/images/InHouseManagement.png",
     features: ["Housekeeping", "Laundry Services", "Facility Management", "Maintenance", "Quality Control"],
     additionalInfo: "Our in-house management modules ensure high standards of cleanliness and facility maintenance."
   },
@@ -61,7 +61,7 @@ const departments = [
     title: "Emergency Management",
     shortDescription: "Comprehensive emergency and casualty management systems.",
     fullDescription: "Complete emergency management including casualty operations, emergency response coordination, critical care management, and emergency patient tracking for optimal emergency care delivery.",
-    icon: "🚨",
+    image: "/images/gallery-emergency.jpg",
     features: ["Casualty Management", "Emergency Response", "Critical Care", "Patient Tracking", "Emergency Coordination"],
     additionalInfo: "Our emergency modules ensure rapid response and efficient emergency care delivery."
   },
@@ -69,7 +69,7 @@ const departments = [
     title: "Patient Portal",
     shortDescription: "Comprehensive patient self-service portal for enhanced patient experience.",
     fullDescription: "Transform your hospital website into a comprehensive patient platform with online appointment booking, medical record access, test results viewing, and family member management under a common user ID.",
-    icon: "💻",
+    image: "/images/PatientPortal.png",
     features: ["Online Appointments", "Medical Records", "Test Results", "Family Management", "Digital Services"],
     additionalInfo: "Our patient portal enhances patient experience and reduces administrative workload."
   },
@@ -77,7 +77,7 @@ const departments = [
     title: "Mobile App",
     shortDescription: "Patient care appointment booking mobile application.",
     fullDescription: "Seamless mobile experience for patients with easy appointment booking, video consultations, secure payments, lab results access, and family member management through a branded mobile application.",
-    icon: "📱",
+    image: "/images/MobileApp.png",
     features: ["Appointment Booking", "Video Consultations", "Secure Payments", "Lab Results", "Family Management"],
     additionalInfo: "Our mobile app can be customized for hospital branding and launched on Google Play Store and Apple Store."
   },
@@ -85,7 +85,7 @@ const departments = [
     title: "WhatsApp Integration",
     shortDescription: "Advanced WhatsApp integration for enhanced communication.",
     fullDescription: "Comprehensive WhatsApp integration for appointment scheduling, lab result access, invoice sharing, and automated messaging including welcome messages, confirmations, and reminders.",
-    icon: "💬",
+    image: "/images/WhatsAppIntegration.png",
     features: ["Appointment Scheduling", "Lab Results", "Invoice Sharing", "Automated Messages", "Secure Communication"],
     additionalInfo: "Our WhatsApp integration provides convenient, secure, and cost-effective communication channels."
   },
@@ -93,7 +93,7 @@ const departments = [
     title: "Teleconsultation",
     shortDescription: "Vconsult teleconsultation solution for remote healthcare delivery.",
     fullDescription: "Advanced teleconsultation solution with one-to-one video interaction, low bandwidth HD video, seamless EMR integration, payment gateway integration, and automated e-prescription facility.",
-    icon: "📹",
+    image: "/images/Teleconsultation.png",
     features: ["Video Consultations", "HD Video", "EMR Integration", "Payment Gateway", "E-Prescriptions"],
     additionalInfo: "Our teleconsultation solution enables doctors to consult patients from anywhere, anytime."
   }
@@ -118,14 +118,24 @@ const Services = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 relative">
           {departments.map((department, idx) => (
             <div 
               key={idx} 
               className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
             >
+                             {/* Image Section */}
+               <div className="relative h-96 overflow-hidden bg-gray-100">
+                 <img 
+                   src={department.image} 
+                   alt={department.title}
+                   className="w-full h-full object-cover object-top transition-transform duration-300 hover:scale-105"
+                 />
+                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                 <div className="absolute bottom-4 left-4 text-2xl">{department.icon}</div>
+               </div>
+              
               <div className="p-6 flex-grow">
-                <div className="text-4xl mb-4">{department.icon}</div>
                 <h3 className="text-xl font-bold text-gray-800 mb-3">
                   {department.title}
                 </h3>
@@ -151,16 +161,23 @@ const Services = () => {
 
               <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 <div className="p-8">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="flex items-center">
-                      <div className="text-4xl mr-4">{departments[expandedIdx].icon}</div>
-                      <h3 className="text-2xl font-bold text-gray-800">
-                        {departments[expandedIdx].title}
-                      </h3>
-                    </div>
+                                     {/* Image Header */}
+                   <div className="relative h-96 mb-6 rounded-lg overflow-hidden bg-gray-100">
+                     <img 
+                       src={departments[expandedIdx].image} 
+                       alt={departments[expandedIdx].title}
+                       className="w-full h-full object-cover object-top"
+                     />
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                     <div className="absolute bottom-4 left-4 flex items-center">
+                       <div className="text-2xl mr-4">{departments[expandedIdx].icon}</div>
+                       <h3 className="text-2xl font-bold text-white">
+                         {departments[expandedIdx].title}
+                       </h3>
+                     </div>
                     <button
                       onClick={() => setExpandedIdx(null)}
-                      className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                      className="absolute top-4 right-4 text-white hover:text-gray-200 text-2xl font-bold bg-black/30 rounded-full w-8 h-8 flex items-center justify-center"
                     >
                       ×
                     </button>

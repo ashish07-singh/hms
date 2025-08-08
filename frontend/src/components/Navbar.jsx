@@ -74,7 +74,7 @@ const Navbar = () => {
             <Link to="/" className="text-gray-700 hover:text-teal-600 font-medium transition">Home</Link>
             <Link to="/about" className="text-gray-700 hover:text-teal-600 font-medium transition">About</Link>
             <Link to="/services" className="text-gray-700 hover:text-teal-600 font-medium transition">Services</Link>
-            <Link to="/gallery" className="text-gray-700 hover:text-teal-600 font-medium transition">Gallery</Link>
+            <Link to="/pricing" className="text-gray-700 hover:text-teal-600 font-medium transition">Pricing</Link>
             <Link to="/contact" className="text-gray-700 hover:text-teal-600 font-medium transition">Contact</Link>
             
             {/* Conditional rendering for auth buttons */}
@@ -120,7 +120,7 @@ const Navbar = () => {
               <Link to="/" className="text-gray-700 hover:text-teal-600 font-medium" onClick={() => setIsMenuOpen(false)}>Home</Link>
               <Link to="/about" className="text-gray-700 hover:text-teal-600 font-medium" onClick={() => setIsMenuOpen(false)}>About</Link>
               <Link to="/services" className="text-gray-700 hover:text-teal-600 font-medium" onClick={() => setIsMenuOpen(false)}>Services</Link>
-              <Link to="/gallery" className="text-gray-700 hover:text-teal-600 font-medium" onClick={() => setIsMenuOpen(false)}>Gallery</Link>
+              <Link to="/pricing" className="text-gray-700 hover:text-teal-600 font-medium" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
               <Link to="/contact" className="text-gray-700 hover:text-teal-600 font-medium" onClick={() => setIsMenuOpen(false)}>Contact</Link>
               
               {/* Conditional rendering for auth buttons in mobile */}

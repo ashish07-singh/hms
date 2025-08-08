@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const About = () => {
   return (
@@ -10,8 +11,8 @@ const About = () => {
             About <span className="text-teal-600">TAJPE</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Pioneering healthcare technology for over 30 years, TAJPE has revolutionized hospital management 
-            through our comprehensive Hospital Management System. We've empowered 550+ healthcare facilities worldwide with 
+            Pioneering healthcare technology for over 30 years, TAJPE has revolutionized hospital management
+            through our comprehensive Hospital Management System. We've empowered 550+ healthcare facilities worldwide with
             comprehensive, scalable solutions that drive operational excellence and superior patient care.
           </p>
         </div>
@@ -21,18 +22,18 @@ const About = () => {
           <div>
             <h2 className="text-3xl font-bold text-gray-800 mb-6">Our Story</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Founded in 1994, TAJPE began with a vision to transform healthcare 
-              operations through innovative technology. What started as a small team of healthcare technology 
+              Founded in 1994, TAJPE began with a vision to transform healthcare
+              operations through innovative technology. What started as a small team of healthcare technology
               enthusiasts has grown into a global leader in Hospital Management Systems.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Over three decades, we've evolved from basic hospital software to a comprehensive 
-              Hospital Management System that serves healthcare facilities of all sizes, from small clinics 
+              Over three decades, we've evolved from basic hospital software to a comprehensive
+              Hospital Management System that serves healthcare facilities of all sizes, from small clinics
               to large multi-specialty hospitals with 200+ beds.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Our journey has been marked by continuous innovation, deep understanding of healthcare workflows, 
-              and unwavering commitment to customer success. Today, our Hospital Management System stands as a testament to our 
+              Our journey has been marked by continuous innovation, deep understanding of healthcare workflows,
+              and unwavering commitment to customer success. Today, our Hospital Management System stands as a testament to our
               expertise and dedication to healthcare excellence.
             </p>
           </div>
@@ -76,100 +77,24 @@ const About = () => {
           <div className="bg-teal-50 p-8 rounded-lg border-l-4 border-teal-600">
             <h3 className="text-2xl font-bold text-teal-700 mb-4">Our Mission</h3>
             <p className="text-gray-700 leading-relaxed">
-              To unlock new heights of excellence in hospital operations through comprehensive, scalable, 
-              and innovative healthcare technology solutions. We empower hospitals of any size to achieve 
-              operational efficiency, reduce costs, and deliver superior patient care through our 
+              To unlock new heights of excellence in hospital operations through comprehensive, scalable,
+              and innovative healthcare technology solutions. We empower hospitals of any size to achieve
+              operational efficiency, reduce costs, and deliver superior patient care through our
               cutting-edge Hospital Management System.
             </p>
           </div>
           <div className="bg-gray-50 p-8 rounded-lg border-l-4 border-gray-600">
             <h3 className="text-2xl font-bold text-gray-800 mb-4">Our Vision</h3>
             <p className="text-gray-700 leading-relaxed">
-              To be the global leader in hospital management systems, revolutionizing healthcare operations 
-              through cutting-edge technology, comprehensive modules, and proven track record of success 
-              across diverse healthcare facilities worldwide. We envision a future where every hospital 
+              To be the global leader in hospital management systems, revolutionizing healthcare operations
+              through cutting-edge technology, comprehensive modules, and proven track record of success
+              across diverse healthcare facilities worldwide. We envision a future where every hospital
               operates with maximum efficiency and patient satisfaction.
             </p>
           </div>
         </div>
 
-        {/* TAJPE HMS Overview */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">About TAJPE HMS</h2>
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-white rounded-lg shadow-lg">
-              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Comprehensive Solution</h3>
-              <p className="text-gray-600">
-                TAJPE offers 42+ modules covering every aspect of hospital operations, from patient 
-                registration to discharge, ensuring complete digital transformation.
-              </p>
-            </div>
-            <div className="text-center p-6 bg-white rounded-lg shadow-lg">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Scalable Architecture</h3>
-              <p className="text-gray-600">
-                Four versions designed for different hospital sizes: Clinic (Basic), Pro (50 beds), 
-                Prime (100 beds), and Premium (200+ beds).
-              </p>
-            </div>
-            <div className="text-center p-6 bg-white rounded-lg shadow-lg">
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Advanced Security</h3>
-              <p className="text-gray-600">
-                Enterprise-grade security with role-based access, data encryption, and compliance 
-                with healthcare data protection standards.
-              </p>
-            </div>
-          </div>
-        </div>
 
-        {/* Why Choose Us */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Why Choose TAJPE?</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center p-6">
-              <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-teal-600">30+</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Years Experience</h3>
-              <p className="text-gray-600 text-sm">Three decades of healthcare technology expertise</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-blue-600">550+</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Happy Clients</h3>
-              <p className="text-gray-600 text-sm">Trusted by healthcare facilities worldwide</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-green-600">42+</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Modules</h3>
-              <p className="text-gray-600 text-sm">Comprehensive hospital management modules</p>
-            </div>
-            <div className="text-center p-6">
-              <div className="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-purple-600">24/7</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Support</h3>
-              <p className="text-gray-600 text-sm">Round-the-clock technical assistance</p>
-            </div>
-          </div>
-        </div>
 
         {/* Technology Expertise */}
         <div className="mb-16">
@@ -235,7 +160,7 @@ const About = () => {
                 </div>
               </div>
               <p className="text-gray-700">
-                "TAJPE transformed our operations completely. Patient wait times reduced by 60% 
+                "TAJPE transformed our operations completely. Patient wait times reduced by 60%
                 and administrative efficiency improved dramatically."
               </p>
             </div>
@@ -250,7 +175,7 @@ const About = () => {
                 </div>
               </div>
               <p className="text-gray-700">
-                "The integration with our cardiac equipment was seamless. Real-time data flow 
+                "The integration with our cardiac equipment was seamless. Real-time data flow
                 has revolutionized our diagnostic processes."
               </p>
             </div>
@@ -265,7 +190,7 @@ const About = () => {
                 </div>
               </div>
               <p className="text-gray-700">
-                "Patient portal and mobile app features have greatly improved parent satisfaction. 
+                "Patient portal and mobile app features have greatly improved parent satisfaction.
                 Appointment booking is now effortless."
               </p>
             </div>
@@ -279,8 +204,8 @@ const About = () => {
             <div>
               <h3 className="text-xl font-bold text-teal-700 mb-4">India</h3>
               <p className="text-gray-700 mb-4">
-                Our headquarters in Kochi, Kerala serves as the innovation hub where we develop 
-                cutting-edge healthcare solutions. With offices across major cities, we provide 
+                Our headquarters in Kochi, Kerala serves as the innovation hub where we develop
+                cutting-edge healthcare solutions. With offices across major cities, we provide
                 comprehensive support to healthcare facilities nationwide.
               </p>
               <div className="flex items-center text-sm text-gray-600">
@@ -291,7 +216,7 @@ const About = () => {
             <div>
               <h3 className="text-xl font-bold text-blue-700 mb-4">UAE</h3>
               <p className="text-gray-700 mb-4">
-                Our Abu Dhabi office serves the Middle East region, providing localized support 
+                Our Abu Dhabi office serves the Middle East region, providing localized support
                 and solutions tailored to the unique healthcare requirements of the region.
               </p>
               <div className="flex items-center text-sm text-gray-600">
@@ -308,13 +233,11 @@ const About = () => {
           <p className="text-xl mb-8 opacity-90">
             Join 550+ healthcare facilities that trust TAJPE for their digital transformation journey.
           </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-teal-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <Link to="/contact" className="bg-white text-teal-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center">
               Request Demo
-            </button>
-            <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-teal-600 transition-colors">
-              Contact Sales
-            </button>
+            </Link>
           </div>
         </div>
       </div>

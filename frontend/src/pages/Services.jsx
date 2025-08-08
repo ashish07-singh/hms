@@ -53,7 +53,7 @@ const departments = [
     title: "In-House Management",
     shortDescription: "Housekeeping, laundry, and facility management services.",
     fullDescription: "Complete in-house management including housekeeping operations, laundry services, and facility management to ensure clean and well-maintained hospital environment.",
-    image: "/images/InHouseManagement.png",
+    image: "/images/In-HouseManagement.png",
     features: ["Housekeeping", "Laundry Services", "Facility Management", "Maintenance", "Quality Control"],
     additionalInfo: "Our in-house management modules ensure high standards of cleanliness and facility maintenance."
   },
@@ -61,7 +61,7 @@ const departments = [
     title: "Emergency Management",
     shortDescription: "Comprehensive emergency and casualty management systems.",
     fullDescription: "Complete emergency management including casualty operations, emergency response coordination, critical care management, and emergency patient tracking for optimal emergency care delivery.",
-    image: "/images/gallery-emergency.jpg",
+    image: "/images/EmergencyManagement.png",
     features: ["Casualty Management", "Emergency Response", "Critical Care", "Patient Tracking", "Emergency Coordination"],
     additionalInfo: "Our emergency modules ensure rapid response and efficient emergency care delivery."
   },

@@ -100,11 +100,7 @@ const Pricing = () => {
         </div>
 
         {/* Footnote */}
-        <div className="mt-6 text-left">
-          <p className="text-sm text-gray-600 italic">
-            *Any module can be added optionally
-          </p>
-        </div>
+
 
         
 

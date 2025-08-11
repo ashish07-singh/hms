@@ -1,86 +1,81 @@
 #!/bin/bash
 
-echo "🚀 Hospital Management System - Vercel Deployment"
-echo "=================================================="
+# 🚀 TAJPE HMS Deployment Script
+# This script helps prepare and deploy your project to Vercel
+
+echo "🚀 Starting TAJPE HMS Deployment Process..."
+
+# Check if we're in the right directory
+if [ ! -f "package.json" ] || [ ! -f "vercel.json" ]; then
+    echo "❌ Error: Please run this script from the project root directory"
+    exit 1
+fi
+
+echo "✅ Project structure verified"
+
+# Install dependencies
+echo "📦 Installing dependencies..."
+npm run install:all
+
+if [ $? -ne 0 ]; then
+    echo "❌ Error: Failed to install dependencies"
+    exit 1
+fi
+
+echo "✅ Dependencies installed successfully"
+
+# Test build
+echo "🔨 Testing build process..."
+npm run build
+
+if [ $? -ne 0 ]; then
+    echo "❌ Error: Build failed"
+    exit 1
+fi
+
+echo "✅ Build successful"
+
+# Check git status
+echo "📝 Checking git status..."
+if [ -n "$(git status --porcelain)" ]; then
+    echo "⚠️  Warning: You have uncommitted changes"
+    echo "   Consider committing them before deployment:"
+    git status --short
+    echo ""
+    read -p "Continue with deployment? (y/N): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "❌ Deployment cancelled"
+        exit 1
+    fi
+else
+    echo "✅ Working directory is clean"
+fi
+
+# Push to GitHub (if needed)
+echo "📤 Pushing to GitHub..."
+git push origin main
+
+if [ $? -ne 0 ]; then
+    echo "❌ Error: Failed to push to GitHub"
+    exit 1
+fi
+
+echo "✅ Code pushed to GitHub successfully"
 
 echo ""
-echo "📋 Prerequisites Checklist:"
-echo "1. ✅ Vercel account (vercel.com)"
-echo "2. ✅ MongoDB Atlas account (cloud.mongodb.com)"
-echo "3. ✅ Git repository ready"
-echo "4. ✅ Environment variables prepared"
+echo "🎉 Deployment preparation complete!"
 echo ""
-
-echo "🔧 Step 1: Prepare Backend for Deployment"
-echo "------------------------------------------"
-echo "1. Create a new GitHub repository for backend"
-echo "2. Push backend code to GitHub:"
-echo "   cd backend"
-echo "   git init"
-echo "   git add ."
-echo "   git commit -m 'Initial backend commit'"
-echo "   git remote add origin https://github.com/yourusername/hospital-backend.git"
-echo "   git push -u origin main"
-echo ""
-
-echo "🌐 Step 2: Deploy Backend to Vercel"
-echo "------------------------------------"
+echo "📋 Next steps:"
 echo "1. Go to https://vercel.com/dashboard"
 echo "2. Click 'New Project'"
-echo "3. Import your backend repository"
-echo "4. Configure environment variables:"
-echo "   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/hms?retryWrites=true&w=majority"
-echo "   DB_NAME=hms"
-echo "   JWT_SECRET=your-super-secret-jwt-key-change-this-in-production"
-echo "   CORS_ORIGIN=https://your-frontend-domain.vercel.app"
-echo "5. Deploy"
+echo "3. Import your GitHub repository: ashish07-singh/hms"
+echo "4. Configure environment variables (see DEPLOYMENT_CONFIG.md)"
+echo "5. Deploy!"
 echo ""
-
-echo "🔧 Step 3: Prepare Frontend for Deployment"
-echo "-------------------------------------------"
-echo "1. Create a new GitHub repository for frontend"
-echo "2. Update frontend/.env with your backend URL:"
-echo "   VITE_BACKEND_URL=https://your-backend-name.vercel.app"
-echo "   VITE_APP_NAME=Hospital Management System"
-echo "3. Push frontend code to GitHub:"
-echo "   cd frontend"
-echo "   git init"
-echo "   git add ."
-echo "   git commit -m 'Initial frontend commit'"
-echo "   git remote add origin https://github.com/yourusername/hospital-frontend.git"
-echo "   git push -u origin main"
+echo "🔗 Useful links:"
+echo "- Deployment Guide: DEPLOYMENT.md"
+echo "- Configuration: DEPLOYMENT_CONFIG.md"
+echo "- GitHub Repo: https://github.com/ashish07-singh/hms"
 echo ""
-
-echo "🌐 Step 4: Deploy Frontend to Vercel"
-echo "-------------------------------------"
-echo "1. Go to https://vercel.com/dashboard"
-echo "2. Click 'New Project'"
-echo "3. Import your frontend repository"
-echo "4. Configure environment variables:"
-echo "   VITE_BACKEND_URL=https://your-backend-name.vercel.app"
-echo "   VITE_APP_NAME=Hospital Management System"
-echo "5. Deploy"
-echo ""
-
-echo "✅ Step 5: Test Your Deployment"
-echo "-------------------------------"
-echo "1. Test frontend: https://your-frontend-domain.vercel.app"
-echo "2. Test admin panel: https://your-frontend-domain.vercel.app/admin/dashboard"
-echo "3. Test backend API: https://your-backend-name.vercel.app"
-echo ""
-
-echo "🔐 Step 6: Create Admin Account"
-echo "-------------------------------"
-echo "1. Visit: https://your-frontend-domain.vercel.app/admin/signup"
-echo "2. Create admin account with @webarclight.com email"
-echo "3. Login and test admin features"
-echo ""
-
-echo "🎉 Deployment Complete!"
-echo "======================"
-echo "Your Hospital Management System is now live!"
-echo ""
-echo "📞 Support:"
-echo "- Vercel Docs: https://vercel.com/docs"
-echo "- MongoDB Atlas: https://docs.atlas.mongodb.com"
-echo "" 
+echo "🚀 Happy deploying!" 

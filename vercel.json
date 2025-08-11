@@ -1,8 +1,17 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
+  "outputDirectory": "frontend/dist",
   "framework": "vite",
+  "functions": {
+    "backend/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/backend/api/$1"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
@@ -23,8 +32,15 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
         }
       ]
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 } 

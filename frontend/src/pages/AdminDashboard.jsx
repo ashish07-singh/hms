@@ -4,6 +4,25 @@ import axios from "axios";
 
 const getInitials = (name = "") => name.split(" ").map(n => n[0]).join("").toUpperCase();
 
+// Returns a pleasant color pair for avatar backgrounds based on a stable hash of the seed
+const getAvatarTone = (seed = "A") => {
+  const tones = [
+    { bg: "bg-indigo-100", text: "text-indigo-700", ring: "ring-indigo-200" },
+    { bg: "bg-emerald-100", text: "text-emerald-700", ring: "ring-emerald-200" },
+    { bg: "bg-sky-100", text: "text-sky-700", ring: "ring-sky-200" },
+    { bg: "bg-amber-100", text: "text-amber-800", ring: "ring-amber-200" },
+    { bg: "bg-rose-100", text: "text-rose-700", ring: "ring-rose-200" },
+    { bg: "bg-violet-100", text: "text-violet-700", ring: "ring-violet-200" },
+  ];
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash << 5) - hash + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  const idx = Math.abs(hash) % tones.length;
+  return tones[idx];
+};
+
 const AdminDashboard = () => {
   const [chats, setChats] = useState([]);
   const [users, setUsers] = useState([]);
@@ -342,33 +361,69 @@ const AdminDashboard = () => {
       {/* Stats Cards */}
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="text-2xl font-bold text-blue-600">{stats.newChats || 0}</div>
-            <div className="text-sm text-gray-600">New Chats</div>
+          {/* Card */}
+          <div className="p-[1px] rounded-lg bg-gradient-to-r from-blue-200 to-blue-100">
+            <div className="bg-white rounded-lg p-4 h-full flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-blue-600">{stats.newChats || 0}</div>
+                <div className="text-sm text-gray-600">New Chats</div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 grid place-items-center">💬</div>
+            </div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="text-2xl font-bold text-yellow-600">{stats.inProgressChats || 0}</div>
-            <div className="text-sm text-gray-600">In Progress</div>
+          <div className="p-[1px] rounded-lg bg-gradient-to-r from-yellow-200 to-yellow-100">
+            <div className="bg-white rounded-lg p-4 h-full flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-yellow-600">{stats.inProgressChats || 0}</div>
+                <div className="text-sm text-gray-600">In Progress</div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-yellow-50 text-yellow-600 grid place-items-center">⏳</div>
+            </div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="text-2xl font-bold text-green-600">{stats.resolvedChats || 0}</div>
-            <div className="text-sm text-gray-600">Resolved</div>
+          <div className="p-[1px] rounded-lg bg-gradient-to-r from-green-200 to-green-100">
+            <div className="bg-white rounded-lg p-4 h-full flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-green-600">{stats.resolvedChats || 0}</div>
+                <div className="text-sm text-gray-600">Resolved</div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-green-50 text-green-600 grid place-items-center">✅</div>
+            </div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="text-2xl font-bold text-gray-600">{stats.archivedChats || 0}</div>
-            <div className="text-sm text-gray-600">Archived</div>
+          <div className="p-[1px] rounded-lg bg-gradient-to-r from-gray-200 to-gray-100">
+            <div className="bg-white rounded-lg p-4 h-full flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-gray-600">{stats.archivedChats || 0}</div>
+                <div className="text-sm text-gray-600">Archived</div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-gray-50 text-gray-600 grid place-items-center">🗂️</div>
+            </div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="text-2xl font-bold text-red-600">{stats.highPriorityChats || 0}</div>
-            <div className="text-sm text-gray-600">High Priority</div>
+          <div className="p-[1px] rounded-lg bg-gradient-to-r from-rose-200 to-rose-100">
+            <div className="bg-white rounded-lg p-4 h-full flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-red-600">{stats.highPriorityChats || 0}</div>
+                <div className="text-sm text-gray-600">High Priority</div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 grid place-items-center">⚠️</div>
+            </div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="text-2xl font-bold text-orange-600">{stats.unreadChats || 0}</div>
-            <div className="text-sm text-gray-600">Unread</div>
+          <div className="p-[1px] rounded-lg bg-gradient-to-r from-orange-200 to-orange-100">
+            <div className="bg-white rounded-lg p-4 h-full flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-orange-600">{stats.unreadChats || 0}</div>
+                <div className="text-sm text-gray-600">Unread</div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-orange-50 text-orange-600 grid place-items-center">🔔</div>
+            </div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="text-2xl font-bold text-purple-600">{stats.totalUsers || 0}</div>
-            <div className="text-sm text-gray-600">Total Users</div>
+          <div className="p-[1px] rounded-lg bg-gradient-to-r from-violet-200 to-violet-100">
+            <div className="bg-white rounded-lg p-4 h-full flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-purple-600">{stats.totalUsers || 0}</div>
+                <div className="text-sm text-gray-600">Total Users</div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-violet-50 text-violet-600 grid place-items-center">👥</div>
+            </div>
           </div>
         </div>
 
@@ -405,7 +460,7 @@ const AdminDashboard = () => {
               
               {/* Chat List */}
               <div className="lg:col-span-1">
-                                  <div className="mb-4">
+                <div className="mb-4">
                   <div className="flex gap-2 mb-3">
                     <input
                       type="text"
@@ -450,7 +505,12 @@ const AdminDashboard = () => {
                   </select>
                 </div>
 
-                <div className="space-y-2 max-h-96 overflow-y-auto">
+                <div className="space-y-2 max-h-[28rem] overflow-y-auto pr-1">
+                  {chats.length === 0 && (
+                    <div className="p-6 text-center text-gray-500 bg-white border rounded-lg">
+                      No chats found. Try adjusting filters.
+                    </div>
+                  )}
                   {chats.map((chat) => (
                     <div
                       key={chat.sessionId}
@@ -463,9 +523,15 @@ const AdminDashboard = () => {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">
-                            {getInitials(chat.userId ? chat.userId.name : chat.userEmail || 'A')}
-                          </div>
+                          {(() => {
+                            const displayName = chat.userId ? chat.userId.name : (chat.userEmail || 'Anonymous');
+                            const tone = getAvatarTone(displayName);
+                            return (
+                              <div className={`w-9 h-9 rounded-full ${tone.bg} ${tone.text} ring-1 ${tone.ring} flex items-center justify-center text-xs font-bold`}>
+                                {getInitials(displayName)}
+                              </div>
+                            );
+                          })()}
                           <div className="min-w-0 flex-1">
                             <div className="font-medium text-sm truncate">
                               {chat.userId ? chat.userId.name : chat.userEmail || 'Anonymous'}
@@ -547,12 +613,15 @@ const AdminDashboard = () => {
               </div>
 
               {/* Chat Messages */}
-              <div className="lg:col-span-2 border rounded-lg bg-white">
+              <div className="lg:col-span-2 border rounded-lg bg-white flex flex-col">
                 {selectedChat ? (
                   <>
-                    <div className="p-4 border-b bg-gray-50">
-                      <h3 className="font-medium">Chat Messages</h3>
-                      <div className="flex gap-2 mt-2">
+                    <div className="p-4 border-b bg-gray-50 flex items-center justify-between">
+                      <div>
+                        <h3 className="font-medium">Chat Messages</h3>
+                        <p className="text-xs text-gray-500">Session: {selectedChat}</p>
+                      </div>
+                      <div className="flex gap-2">
                         <select
                           onChange={(e) => updateChatStatus(selectedChat, e.target.value)}
                           defaultValue=""
@@ -576,7 +645,7 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                     
-                    <div className="p-4 max-h-96 overflow-y-auto">
+                    <div className="p-4 flex-1 overflow-y-auto">
                       <div className="space-y-3">
                         {messages.map((message, index) => (
                           <div
@@ -584,7 +653,7 @@ const AdminDashboard = () => {
                             className={`flex ${message.from === 'user' ? 'justify-end' : 'justify-start'}`}
                           >
                             <div
-                              className={`max-w-xs px-3 py-2 rounded-lg ${
+                              className={`max-w-[80%] px-3 py-2 rounded-2xl shadow-sm ring-1 ring-black/5 ${
                                 message.from === 'user'
                                   ? 'bg-blue-500 text-white'
                                   : message.from === 'admin'
@@ -600,6 +669,11 @@ const AdminDashboard = () => {
                           </div>
                         ))}
                         <div ref={messagesEndRef} />
+                        {messages.length === 0 && (
+                          <div className="text-center text-gray-500 py-12">
+                            No messages yet. Start the conversation.
+                          </div>
+                        )}
                       </div>
                     </div>
                     
@@ -624,8 +698,10 @@ const AdminDashboard = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="p-8 text-center text-gray-500">
-                    Select a chat to view messages
+                  <div className="p-12 text-center text-gray-500 grid place-items-center gap-3">
+                    <div className="w-16 h-16 rounded-full bg-gray-100 grid place-items-center">💬</div>
+                    <div className="text-gray-700 font-medium">No chat selected</div>
+                    <div className="text-sm">Select a chat from the list to view messages</div>
                   </div>
                 )}
               </div>

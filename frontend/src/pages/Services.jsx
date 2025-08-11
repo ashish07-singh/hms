@@ -172,9 +172,9 @@ const Services = () => {
                      <div className="absolute bottom-4 left-4 flex items-center">
                        <div className="text-2xl mr-4">{departments[expandedIdx].icon}</div>
                        <h3 className="text-2xl font-bold text-white">
-                         {departments[expandedIdx].title}
-                       </h3>
-                     </div>
+                        {departments[expandedIdx].title}
+                      </h3>
+                    </div>
                     <button
                       onClick={() => setExpandedIdx(null)}
                       className="absolute top-4 right-4 text-white hover:text-gray-200 text-2xl font-bold bg-black/30 rounded-full w-8 h-8 flex items-center justify-center"

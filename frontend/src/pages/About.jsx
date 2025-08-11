@@ -145,57 +145,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* Client Success Stories */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Client Success Stories</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-teal-600">
-              <div className="flex items-center mb-4">
-                <div className="bg-teal-100 w-12 h-12 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-teal-600 font-bold">M</span>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800">Multi-Specialty Hospital</h4>
-                  <p className="text-gray-600 text-sm">200+ beds, Mumbai</p>
-                </div>
-              </div>
-              <p className="text-gray-700">
-                "TAJPE transformed our operations completely. Patient wait times reduced by 60%
-                and administrative efficiency improved dramatically."
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-blue-600">
-              <div className="flex items-center mb-4">
-                <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-blue-600 font-bold">C</span>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800">Cardiac Care Center</h4>
-                  <p className="text-gray-600 text-sm">100 beds, Delhi</p>
-                </div>
-              </div>
-              <p className="text-gray-700">
-                "The integration with our cardiac equipment was seamless. Real-time data flow
-                has revolutionized our diagnostic processes."
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg border-l-4 border-green-600">
-              <div className="flex items-center mb-4">
-                <div className="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-green-600 font-bold">P</span>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800">Pediatric Hospital</h4>
-                  <p className="text-gray-600 text-sm">50 beds, Bangalore</p>
-                </div>
-              </div>
-              <p className="text-gray-700">
-                "Patient portal and mobile app features have greatly improved parent satisfaction.
-                Appointment booking is now effortless."
-              </p>
-            </div>
-          </div>
-        </div>
+       
 
         {/* Global Presence */}
         <div className="bg-gradient-to-r from-teal-50 to-blue-50 p-8 rounded-lg mb-16">
@@ -210,7 +160,7 @@ const About = () => {
               </p>
               <div className="flex items-center text-sm text-gray-600">
                 <span className="mr-4">📍 Kochi, Kerala</span>
-                <span>📞 +91 9048767111</span>
+                <span>📞 +91 9876543210</span>
               </div>
             </div>
             <div>

@@ -7,16 +7,31 @@ const getInitials = (name = "") => name.split(" ").map(n => n[0]).join("").toUpp
 const AdminDashboard = () => {
   const [chats, setChats] = useState([]);
   const [users, setUsers] = useState([]);
+  const [stats, setStats] = useState({});
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
   const [admin, setAdmin] = useState(null);
-  const [loadingChats, setLoadingChats] = useState(false);
-  const [loadingUsers, setLoadingUsers] = useState(false);
-  const [loadingMessages, setLoadingMessages] = useState(false);
-  const [lastMessageCount, setLastMessageCount] = useState(0);
-  const [lastChatCount, setLastChatCount] = useState(0);
+  const [activeTab, setActiveTab] = useState('chats');
+  const [isPolling, setIsPolling] = useState(false);
+  
+  // Pagination and filtering
+  const [chatFilters, setChatFilters] = useState({
+    page: 1,
+    limit: 20,
+    status: 'active',
+    priority: 'all',
+    search: ''
+  });
+  const [userFilters, setUserFilters] = useState({
+    page: 1,
+    limit: 50,
+    search: ''
+  });
+  const [chatPagination, setChatPagination] = useState({});
+  const [userPagination, setUserPagination] = useState({});
+  
   const navigate = useNavigate();
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const messagesEndRef = useRef(null);
@@ -37,46 +52,60 @@ const AdminDashboard = () => {
       return;
     }
     setAdmin(JSON.parse(adminData));
+    fetchStats();
     fetchChats();
-    fetchUsers();
-  }, [navigate]);
+    if (activeTab === 'users') fetchUsers();
+  }, [navigate, activeTab]);
 
-  // Smart polling for chats - only when there are changes
+  // Refetch when filters change
   useEffect(() => {
+    fetchChats();
+  }, [chatFilters]);
+
+  useEffect(() => {
+    if (activeTab === 'users') fetchUsers();
+  }, [userFilters, activeTab]);
+
+  // Smart polling for chats - automatically refresh for new chats
+  useEffect(() => {
+    if (activeTab !== 'chats') return;
+
     const pollChats = async () => {
       try {
+        setIsPolling(true);
         const token = localStorage.getItem("adminToken");
-        const response = await axios.get(`${BACKEND_URL}/api/admin/chats`, {
+        const params = new URLSearchParams(chatFilters).toString();
+        const response = await axios.get(`${BACKEND_URL}/api/admin/chats?${params}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const newChats = response.data.chats || [];
         
-        // Only update if there are actual changes
-        if (newChats.length !== lastChatCount) {
+        // Only update if there are actual changes (avoid unnecessary re-renders)
+        if (JSON.stringify(newChats) !== JSON.stringify(chats)) {
           setChats(newChats);
-          setLastChatCount(newChats.length);
+          setChatPagination(response.data.pagination || {});
+          
+          // Also refresh stats when chats change
+          fetchStats();
         }
       } catch (error) {
-        if (error?.response?.status === 401) {
-          // Token invalid or expired -> force logout
-          localStorage.removeItem('adminToken');
-          localStorage.removeItem('admin');
-          window.dispatchEvent(new Event('storage'));
-          navigate('/login');
-        }
+        handleAuthError(error);
+      } finally {
+        setIsPolling(false);
       }
     };
 
-    // Poll every 10 seconds for new chats
-    chatPollingRef.current = setInterval(pollChats, 10000);
+    // Poll every 5 seconds for new chats
+    chatPollingRef.current = setInterval(pollChats, 5000);
+    
     return () => {
       if (chatPollingRef.current) clearInterval(chatPollingRef.current);
     };
-  }, [lastChatCount]);
+  }, [activeTab, chatFilters, chats]);
 
   // Smart polling for messages in selected chat
   useEffect(() => {
-    if (!selectedChat) return;
+    if (!selectedChat || activeTab !== 'chats') return;
 
     const pollMessages = async () => {
       try {
@@ -87,103 +116,132 @@ const AdminDashboard = () => {
         const newMessages = response.data.messages || [];
         
         // Only update if there are new messages
-        if (newMessages.length !== lastMessageCount) {
+        if (newMessages.length !== messages.length) {
           setMessages(newMessages);
-          setLastMessageCount(newMessages.length);
           
-          // Update chat list to reflect new messages
+          // Refresh chat list to update last message display
           fetchChats();
         }
       } catch (error) {
-        if (error?.response?.status === 401) {
-          localStorage.removeItem('adminToken');
-          localStorage.removeItem('admin');
-          window.dispatchEvent(new Event('storage'));
-          navigate('/login');
-        }
+        handleAuthError(error);
       }
     };
 
-    // Poll every 5 seconds for new messages in selected chat
-    messagePollingRef.current = setInterval(pollMessages, 5000);
+    // Poll every 3 seconds for new messages in selected chat
+    messagePollingRef.current = setInterval(pollMessages, 3000);
+    
     return () => {
       if (messagePollingRef.current) clearInterval(messagePollingRef.current);
     };
-  }, [selectedChat, lastMessageCount]);
+  }, [selectedChat, activeTab, messages.length]);
 
-  const fetchChats = async () => {
-    setLoadingChats(true);
+  const fetchStats = async () => {
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(`${BACKEND_URL}/api/admin/chats`, {
+      const response = await axios.get(`${BACKEND_URL}/api/admin/stats`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const newChats = response.data.chats || [];
-      setChats(newChats);
-      setLastChatCount(newChats.length);
+      setStats(response.data);
     } catch (error) {
-      if (error?.response?.status === 401) {
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('admin');
-        window.dispatchEvent(new Event('storage'));
-        navigate('/login');
-        return;
-      }
+      handleAuthError(error);
+    }
+  };
+
+  const fetchChats = async () => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      const params = new URLSearchParams(chatFilters).toString();
+      const response = await axios.get(`${BACKEND_URL}/api/admin/chats?${params}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setChats(response.data.chats || []);
+      setChatPagination(response.data.pagination || {});
+    } catch (error) {
+      handleAuthError(error);
       setChats([]);
-    } finally {
-      setLoadingChats(false);
     }
   };
 
   const fetchUsers = async () => {
-    setLoadingUsers(true);
     try {
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(`${BACKEND_URL}/api/admin/users`, {
+      const params = new URLSearchParams(userFilters).toString();
+      const response = await axios.get(`${BACKEND_URL}/api/admin/users?${params}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(response.data.users || []);
+      setUserPagination(response.data.pagination || {});
     } catch (error) {
-      if (error?.response?.status === 401) {
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('admin');
-        window.dispatchEvent(new Event('storage'));
-        navigate('/login');
-        return;
-      }
+      handleAuthError(error);
       setUsers([]);
-    } finally {
-      setLoadingUsers(false);
     }
   };
 
   const fetchMessages = async (sessionId) => {
-    setLoadingMessages(true);
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.get(`${BACKEND_URL}/api/admin/chat/${sessionId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const newMessages = response.data.messages || [];
-      setMessages(newMessages);
-      setLastMessageCount(newMessages.length);
+      setMessages(response.data.messages || []);
     } catch (error) {
-      if (error?.response?.status === 401) {
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('admin');
-        window.dispatchEvent(new Event('storage'));
-        navigate('/login');
-        return;
-      }
+      handleAuthError(error);
       setMessages([]);
-    } finally {
-      setLoadingMessages(false);
     }
   };
 
-  const selectChat = (sessionId) => {
+  const handleAuthError = (error) => {
+    if (error?.response?.status === 401) {
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('admin');
+      window.dispatchEvent(new Event('storage'));
+      navigate('/login');
+    }
+  };
+
+  const selectChat = async (sessionId) => {
     setSelectedChat(sessionId);
-    fetchMessages(sessionId);
+    await fetchMessages(sessionId);
+    
+    // Mark chat as in-progress when selected
+    await updateChatStatus(sessionId, 'in-progress');
+  };
+
+  const updateChatStatus = async (sessionId, status, priority = null) => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      await axios.patch(`${BACKEND_URL}/api/admin/chat/${sessionId}/status`, {
+        status,
+        priority
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchChats();
+      fetchStats();
+    } catch (error) {
+      console.error('Error updating chat status:', error);
+    }
+  };
+
+  const archiveChat = async (sessionId) => {
+    if (!confirm('Are you sure you want to archive this chat?')) return;
+    
+    try {
+      const token = localStorage.getItem("adminToken");
+      await axios.delete(`${BACKEND_URL}/api/admin/chat/${sessionId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { action: 'archive' }
+      });
+      fetchChats();
+      fetchStats();
+      if (selectedChat === sessionId) {
+        setSelectedChat(null);
+        setMessages([]);
+      }
+    } catch (error) {
+      console.error('Error archiving chat:', error);
+      alert('Failed to archive chat');
+    }
   };
 
   const sendReply = async () => {
@@ -202,23 +260,17 @@ const AdminDashboard = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      // Immediately add the message to the UI for instant feedback
+      // Immediately add the message to the UI
       const newMessage = {
         text: messageToSend,
         from: 'admin',
         timestamp: new Date().toISOString()
       };
       setMessages(prev => [...prev, newMessage]);
-      setLastMessageCount(prev => prev + 1);
-      
-      // Update chat list to show the new message
-      setTimeout(() => {
-        fetchChats();
-      }, 500);
       
     } catch (error) {
       alert('Failed to send reply');
-      setReply(messageToSend); // Restore the message if it failed
+      setReply(messageToSend);
     } finally {
       setLoading(false);
     }
@@ -227,10 +279,7 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("admin");
-    
-    // Trigger storage event to update navbar
     window.dispatchEvent(new Event('storage'));
-    
     navigate("/login");
   };
 
@@ -240,211 +289,424 @@ const AdminDashboard = () => {
     return date.toLocaleString();
   };
 
-  const getSelectedChatInfo = () => {
-    const chat = chats.find(c => c.sessionId === selectedChat);
-    if (!chat) return "";
-    const userInfo = chat.userId ? `${chat.userId.name} (${chat.userId.email})` : chat.userEmail || 'Anonymous';
-    return ` - ${userInfo}`;
+  const getStatusColor = (status) => {
+    const colors = {
+      'new': 'bg-blue-100 text-blue-800',
+      'in-progress': 'bg-yellow-100 text-yellow-800',
+      'resolved': 'bg-green-100 text-green-800',
+      'archived': 'bg-gray-100 text-gray-800'
+    };
+    return colors[status] || 'bg-gray-100 text-gray-800';
+  };
+
+  const getPriorityColor = (priority) => {
+    const colors = {
+      'high': 'bg-red-100 text-red-800',
+      'medium': 'bg-yellow-100 text-yellow-800',
+      'low': 'bg-green-100 text-green-800'
+    };
+    return colors[priority] || 'bg-gray-100 text-gray-800';
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-gradient-to-r from-blue-700 to-purple-700 text-white p-6 shadow-md">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Hospital Chat Admin</h1>
-            <p className="text-blue-100 text-sm">Manage customer support conversations and respond to users</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-2 text-blue-100 font-semibold">
-              <span className="inline-flex items-center justify-center w-8 h-8 bg-white bg-opacity-20 rounded-full text-lg font-bold">
-                {getInitials(admin?.username || 'A')}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-white">TAJPE Admin Dashboard</h1>
+              <p className="text-blue-100">Manage customer support and user interactions</p>
+            </div>
+            <div className="flex items-center gap-4">
+              {activeTab === 'chats' && (
+                <div className="flex items-center gap-2 text-sm text-gray-200">
+                  <div className={`w-2 h-2 rounded-full ${isPolling ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`}></div>
+                  Auto-refresh: {isPolling ? 'Updating...' : 'Active'}
+                </div>
+              )}
+              <span className="text-sm text-blue-100">
+                Welcome, {admin?.username || 'Admin'}
               </span>
-              Welcome, {admin?.username || 'Admin'}
-            </span>
-            <button
-              onClick={handleLogout}
-              className="bg-black bg-opacity-20 hover:bg-opacity-40 px-4 py-2 rounded-lg font-semibold transition-all"
-            >
-              Logout
-            </button>
+              <button
+                onClick={handleLogout}
+                className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-colors"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto p-4 md:p-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 min-h-[70vh]">
-          
-          {/* Active Chats */}
-          <div className="bg-white rounded-2xl shadow-xl flex flex-col h-[70vh]">
-            <div className="sticky top-0 z-10 bg-white border-b px-4 py-3 flex justify-between items-center">
-              <h2 className="text-lg font-bold text-blue-700 flex items-center gap-2">
-                <span className="material-icons text-blue-500">chat</span> Active Chats
-              </h2>
+      {/* Stats Cards */}
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="text-2xl font-bold text-blue-600">{stats.newChats || 0}</div>
+            <div className="text-sm text-gray-600">New Chats</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="text-2xl font-bold text-yellow-600">{stats.inProgressChats || 0}</div>
+            <div className="text-sm text-gray-600">In Progress</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="text-2xl font-bold text-green-600">{stats.resolvedChats || 0}</div>
+            <div className="text-sm text-gray-600">Resolved</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="text-2xl font-bold text-gray-600">{stats.archivedChats || 0}</div>
+            <div className="text-sm text-gray-600">Archived</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="text-2xl font-bold text-red-600">{stats.highPriorityChats || 0}</div>
+            <div className="text-sm text-gray-600">High Priority</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="text-2xl font-bold text-orange-600">{stats.unreadChats || 0}</div>
+            <div className="text-sm text-gray-600">Unread</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="text-2xl font-bold text-purple-600">{stats.totalUsers || 0}</div>
+            <div className="text-sm text-gray-600">Total Users</div>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="border-b">
+            <nav className="flex space-x-8 px-6">
               <button
-                onClick={fetchChats}
-                className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors"
+                onClick={() => setActiveTab('chats')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'chats' 
+                    ? 'border-blue-500 text-blue-600' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
               >
-                🔄 Refresh
+                Support Chats
               </button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-2">
-              {loadingChats ? (
-                <div className="flex justify-center items-center h-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <button
+                onClick={() => setActiveTab('users')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'users' 
+                    ? 'border-blue-500 text-blue-600' 
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Registered Users
+              </button>
+            </nav>
+          </div>
+
+          {/* Chat Tab */}
+          {activeTab === 'chats' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+              
+              {/* Chat List */}
+              <div className="lg:col-span-1">
+                                  <div className="mb-4">
+                  <div className="flex gap-2 mb-3">
+                    <input
+                      type="text"
+                      placeholder="Search chats..."
+                      value={chatFilters.search}
+                      onChange={(e) => setChatFilters(prev => ({...prev, search: e.target.value, page: 1}))}
+                      className="flex-1 px-3 py-2 border rounded-lg text-sm"
+                    />
+                    <select
+                      value={chatFilters.status}
+                      onChange={(e) => setChatFilters(prev => ({...prev, status: e.target.value, page: 1}))}
+                      className="px-3 py-2 border rounded-lg text-sm"
+                    >
+                      <option value="all">All Status</option>
+                      <option value="active">Active</option>
+                      <option value="new">New</option>
+                      <option value="in-progress">In Progress</option>
+                      <option value="resolved">Resolved</option>
+                      <option value="archived">Archived</option>
+                    </select>
+                    <button
+                      onClick={fetchChats}
+                      className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm flex items-center gap-1"
+                    >
+                      {isPolling ? (
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        '🔄'
+                      )}
+                      Refresh
+                    </button>
+                  </div>
+                  <select
+                    value={chatFilters.priority}
+                    onChange={(e) => setChatFilters(prev => ({...prev, priority: e.target.value, page: 1}))}
+                    className="w-full px-3 py-2 border rounded-lg text-sm"
+                  >
+                    <option value="all">All Priorities</option>
+                    <option value="high">High Priority</option>
+                    <option value="medium">Medium Priority</option>
+                    <option value="low">Low Priority</option>
+                  </select>
                 </div>
-              ) : chats.length === 0 ? (
-                <div className="text-center text-gray-400 py-8">No active chats</div>
-              ) : (
-                <div className="space-y-2">
+
+                <div className="space-y-2 max-h-96 overflow-y-auto">
                   {chats.map((chat) => (
                     <div
                       key={chat.sessionId}
                       onClick={() => selectChat(chat.sessionId)}
-                      className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer border transition-all duration-200 hover:shadow-md ${
+                      className={`p-3 rounded-lg cursor-pointer border transition-colors ${
                         selectedChat === chat.sessionId 
-                          ? 'border-blue-500 bg-blue-50 shadow-md' 
-                          : 'border-gray-200 hover:border-blue-300 bg-white'
+                          ? 'border-blue-500 bg-blue-50' 
+                          : 'border-gray-200 bg-white hover:bg-gray-50'
                       }`}
                     >
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-lg">
-                        {getInitials(chat.userId ? chat.userId.name : chat.userEmail || 'A')}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-gray-800 truncate">
-                          {chat.userId ? chat.userId.name : chat.userEmail || 'Anonymous'}
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">
+                            {getInitials(chat.userId ? chat.userId.name : chat.userEmail || 'A')}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="font-medium text-sm truncate">
+                              {chat.userId ? chat.userId.name : chat.userEmail || 'Anonymous'}
+                            </div>
+                            <div className="text-xs text-gray-500 truncate">
+                              {chat.messages.length > 0 ? chat.messages[chat.messages.length - 1].text : 'No messages'}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-500 truncate">
-                          {chat.messages.length > 0 ? chat.messages[chat.messages.length - 1].text : 'No messages'}
+                        <div className="flex flex-col items-end gap-1">
+                          <div className="flex items-center gap-1">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(chat.status)}`}>
+                              {chat.status}
+                            </span>
+                            {chat.unreadCount > 0 && (
+                              <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                                {chat.unreadCount}
+                              </span>
+                            )}
+                          </div>
+                          {chat.priority && (
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(chat.priority)}`}>
+                              {chat.priority}
+                            </span>
+                          )}
                         </div>
                       </div>
-                      <div className="flex flex-col items-end">
+                      <div className="mt-2 flex justify-between items-center">
                         <span className="text-xs text-gray-400">{formatTime(chat.lastMessage)}</span>
-                        {chat.userId && (
-                          <span className={`mt-1 w-2 h-2 rounded-full ${chat.userId.isOnline ? 'bg-green-500' : 'bg-gray-400'}`}></span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Chat Messages */}
-          <div className="bg-white rounded-2xl shadow-xl flex flex-col h-[70vh]">
-            <div className="sticky top-0 z-10 bg-white border-b px-4 py-3">
-              <h2 className="text-lg font-bold text-blue-700">Chat Messages{getSelectedChatInfo()}</h2>
-            </div>
-            <div className="flex-1 overflow-y-auto p-4">
-              {loadingMessages ? (
-                <div className="flex justify-center items-center h-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                </div>
-              ) : messages.length === 0 ? (
-                <div className="text-center text-gray-400 py-8">
-                  {selectedChat ? 'No messages' : 'Select a chat to view messages'}
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {messages.map((message, index) => (
-                    <div
-                      key={index}
-                      className={`flex ${message.from === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`max-w-xs md:max-w-md px-4 py-2 rounded-2xl shadow-sm transition-all duration-200 ${
-                          message.from === 'user'
-                            ? 'bg-blue-600 text-white'
-                            : message.from === 'admin'
-                            ? 'bg-green-600 text-white'
-                            : 'bg-gray-600 text-white'
-                        }`}
-                      >
-                        <div>{message.text}</div>
-                        <div className="text-xs opacity-75 mt-1">
-                          {formatTime(message.timestamp)}
-                          {message.from === 'admin' && ' • Support Team'}
+                        <div className="flex gap-1">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateChatStatus(chat.sessionId, 'resolved');
+                            }}
+                            className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200"
+                          >
+                            Resolve
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              archiveChat(chat.sessionId);
+                            }}
+                            className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200"
+                          >
+                            Archive
+                          </button>
                         </div>
                       </div>
                     </div>
                   ))}
-                  <div ref={messagesEndRef} />
                 </div>
-              )}
-            </div>
-            {selectedChat && (
-              <div className="p-4 border-t bg-gray-50">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={reply}
-                    onChange={(e) => setReply(e.target.value)}
-                    placeholder="Type your reply..."
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                    onKeyDown={(e) => e.key === 'Enter' && sendReply()}
-                  />
-                  <button
-                    onClick={sendReply}
-                    disabled={loading || !reply.trim()}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {loading ? 'Sending...' : 'Send'}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
 
-          {/* Registered Users */}
-          <div className="bg-white rounded-2xl shadow-xl flex flex-col h-[70vh]">
-            <div className="sticky top-0 z-10 bg-white border-b px-4 py-3 flex justify-between items-center">
-              <h2 className="text-lg font-bold text-blue-700 flex items-center gap-2">
-                <span className="material-icons text-blue-500">people</span> Registered Users
-              </h2>
-              <button
-                onClick={fetchUsers}
-                className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors"
-              >
-                🔄 Refresh
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-2">
-              {loadingUsers ? (
-                <div className="flex justify-center items-center h-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                </div>
-              ) : users.length === 0 ? (
-                <div className="text-center text-gray-400 py-8">No registered users</div>
-              ) : (
-                <div className="space-y-2">
-                  {users.map((user) => (
-                    <div key={user._id} className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all duration-200">
-                      <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-lg">
-                        {getInitials(user.name)}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-gray-800 truncate">{user.name}</div>
-                        <div className="text-xs text-gray-500 truncate">{user.email}</div>
-                      </div>
-                      <div className="flex flex-col items-end">
-                        <span className={`text-xs font-semibold ${user.isOnline ? 'text-green-600' : 'text-gray-400'}`}>
-                          {user.isOnline ? 'Online' : 'Offline'}
-                        </span>
-                        <span className="text-xs text-gray-400">Last: {formatTime(user.lastMessage)}</span>
+                {/* Pagination */}
+                {chatPagination.total > 1 && (
+                  <div className="flex justify-between items-center mt-4 text-sm">
+                    <span className="text-gray-600">
+                      Page {chatPagination.current} of {chatPagination.total}
+                    </span>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setChatFilters(prev => ({...prev, page: prev.page - 1}))}
+                        disabled={chatPagination.current <= 1}
+                        className="px-3 py-1 bg-gray-100 rounded disabled:opacity-50"
+                      >
+                        Prev
+                      </button>
+                      <button
+                        onClick={() => setChatFilters(prev => ({...prev, page: prev.page + 1}))}
+                        disabled={chatPagination.current >= chatPagination.total}
+                        className="px-3 py-1 bg-gray-100 rounded disabled:opacity-50"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Chat Messages */}
+              <div className="lg:col-span-2 border rounded-lg bg-white">
+                {selectedChat ? (
+                  <>
+                    <div className="p-4 border-b bg-gray-50">
+                      <h3 className="font-medium">Chat Messages</h3>
+                      <div className="flex gap-2 mt-2">
+                        <select
+                          onChange={(e) => updateChatStatus(selectedChat, e.target.value)}
+                          defaultValue=""
+                          className="text-sm px-2 py-1 border rounded"
+                        >
+                          <option value="" disabled>Update Status</option>
+                          <option value="new">New</option>
+                          <option value="in-progress">In Progress</option>
+                          <option value="resolved">Resolved</option>
+                        </select>
+                        <select
+                          onChange={(e) => updateChatStatus(selectedChat, null, e.target.value)}
+                          defaultValue=""
+                          className="text-sm px-2 py-1 border rounded"
+                        >
+                          <option value="" disabled>Set Priority</option>
+                          <option value="low">Low</option>
+                          <option value="medium">Medium</option>
+                          <option value="high">High</option>
+                        </select>
                       </div>
                     </div>
-                  ))}
+                    
+                    <div className="p-4 max-h-96 overflow-y-auto">
+                      <div className="space-y-3">
+                        {messages.map((message, index) => (
+                          <div
+                            key={index}
+                            className={`flex ${message.from === 'user' ? 'justify-end' : 'justify-start'}`}
+                          >
+                            <div
+                              className={`max-w-xs px-3 py-2 rounded-lg ${
+                                message.from === 'user'
+                                  ? 'bg-blue-500 text-white'
+                                  : message.from === 'admin'
+                                  ? 'bg-green-500 text-white'
+                                  : 'bg-gray-200 text-gray-800'
+                              }`}
+                            >
+                              <div>{message.text}</div>
+                              <div className="text-xs opacity-75 mt-1">
+                                {formatTime(message.timestamp)}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        <div ref={messagesEndRef} />
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 border-t bg-gray-50">
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={reply}
+                          onChange={(e) => setReply(e.target.value)}
+                          placeholder="Type your reply..."
+                          className="flex-1 px-3 py-2 border rounded-lg"
+                          onKeyDown={(e) => e.key === 'Enter' && sendReply()}
+                        />
+                        <button
+                          onClick={sendReply}
+                          disabled={loading || !reply.trim()}
+                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                        >
+                          Send
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="p-8 text-center text-gray-500">
+                    Select a chat to view messages
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Users Tab */}
+          {activeTab === 'users' && (
+            <div className="p-6">
+              <div className="mb-4">
+                <input
+                  type="text"
+                  placeholder="Search users..."
+                  value={userFilters.search}
+                  onChange={(e) => setUserFilters(prev => ({...prev, search: e.target.value, page: 1}))}
+                  className="w-full max-w-md px-3 py-2 border rounded-lg"
+                />
+              </div>
+
+              <div className="bg-white rounded-lg overflow-hidden">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">User</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Email</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Phone</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Registered</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {users.map((user) => (
+                      <tr key={user._id} className="hover:bg-gray-50">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm font-bold">
+                              {getInitials(user.name)}
+                            </div>
+                            <span className="font-medium">{user.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-gray-600">{user.email}</td>
+                        <td className="px-4 py-3 text-gray-600">{user.phone || 'N/A'}</td>
+                        <td className="px-4 py-3 text-gray-600">{formatTime(user.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* User Pagination */}
+              {userPagination.total > 1 && (
+                <div className="flex justify-between items-center mt-4">
+                  <span className="text-sm text-gray-600">
+                    Showing {((userPagination.current - 1) * userPagination.limit) + 1} to{' '}
+                    {Math.min(userPagination.current * userPagination.limit, userPagination.count)} of{' '}
+                    {userPagination.count} users
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setUserFilters(prev => ({...prev, page: prev.page - 1}))}
+                      disabled={userPagination.current <= 1}
+                      className="px-3 py-1 bg-gray-100 rounded disabled:opacity-50"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={() => setUserFilters(prev => ({...prev, page: prev.page + 1}))}
+                      disabled={userPagination.current >= userPagination.total}
+                      className="px-3 py-1 bg-gray-100 rounded disabled:opacity-50"
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminDashboard; 
+export default AdminDashboard;

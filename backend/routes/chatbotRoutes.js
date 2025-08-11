@@ -43,7 +43,10 @@ router.post("/", async (req, res) => {
         sessionId: currentSessionId,
         userId: userId,
         userEmail: email,
-        messages: []
+        messages: [],
+        status: 'new',
+        priority: 'medium',
+        unreadCount: 0
       });
     }
 
@@ -58,6 +61,10 @@ router.post("/", async (req, res) => {
     
     chat.messages.push(userMessage);
     chat.lastMessage = new Date();
+    
+    // Increment unread count for admins when user sends message
+    chat.unreadCount = (chat.unreadCount || 0) + 1;
+    
     await chat.save();
 
     // Update user's chat session if registered

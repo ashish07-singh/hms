@@ -41,6 +41,11 @@ const chatSchema = new mongoose.Schema({
     required: false
   },
   messages: [messageSchema],
+  status: {
+    type: String,
+    enum: ['new', 'in-progress', 'resolved', 'archived'],
+    default: 'new'
+  },
   isActive: {
     type: Boolean,
     default: true
@@ -48,6 +53,23 @@ const chatSchema = new mongoose.Schema({
   lastMessage: {
     type: Date,
     default: Date.now
+  },
+  assignedAdmin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Admin',
+    required: false
+  },
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high'],
+    default: 'medium'
+  },
+  tags: [{
+    type: String
+  }],
+  unreadCount: {
+    type: Number,
+    default: 0
   }
 }, { timestamps: true });
 

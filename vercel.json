@@ -1,7 +1,8 @@
 {
+  "framework": "other",
   "buildCommand": "npm run build",
   "outputDirectory": "frontend/dist",
-  "framework": "vite",
+  "installCommand": "npm run install:all",
   "functions": {
     "backend/**/*.js": {
       "runtime": "nodejs18.x"

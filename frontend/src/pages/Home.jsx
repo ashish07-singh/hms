@@ -169,7 +169,7 @@ function Home() {
           </div>
         </div>
       </section>
-
+      
       {/* Implementation Process Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -450,7 +450,7 @@ function Home() {
           </div>
         </div>
       </section>
-
+      
       <Services />
     </div>
   );

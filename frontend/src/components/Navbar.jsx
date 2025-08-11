@@ -73,7 +73,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-gray-700 hover:text-teal-600 font-medium transition">Home</Link>
             <Link to="/about" className="text-gray-700 hover:text-teal-600 font-medium transition">About</Link>
-            <Link to="/services" className="text-gray-700 hover:text-teal-600 font-medium transition">Services</Link>
+            {/* <Link to="/services" className="text-gray-700 hover:text-teal-600 font-medium transition">Services</Link> */}
             <Link to="/pricing" className="text-gray-700 hover:text-teal-600 font-medium transition">Pricing</Link>
             <Link to="/contact" className="text-gray-700 hover:text-teal-600 font-medium transition">Contact</Link>
             

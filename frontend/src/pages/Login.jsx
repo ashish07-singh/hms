@@ -62,41 +62,39 @@ const Login = () => {
           localStorage.setItem('admin', JSON.stringify(data.admin));
 
           toast.success('Admin login successful!');
+          // Trigger storage event so Navbar/Chatbot sync immediately
+          window.dispatchEvent(new Event('storage'));
           navigate('/admin/dashboard');
           return; // Exit early if admin login succeeds
         } catch (adminErr) {
-          console.log('Admin login failed, trying regular user login...');
-          // Continue to regular user login below
-        }
-        
-        // If admin login failed, try regular user login
-        try {
-          const { data } = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
-            formData,
-            {
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              withCredentials: true
-            }
-          );
+          // If admin login fails, try regular user login but DO NOT grant admin access
+          try {
+            const { data } = await axios.post(
+              `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                withCredentials: true
+              }
+            );
 
-          // Store as admin token for webarclight.com emails (even if they're regular users)
-          localStorage.setItem('adminToken', data.token);
-          localStorage.setItem('admin', JSON.stringify({
-            id: data.user._id,
-            username: data.user.name,
-            email: data.user.email,
-            role: 'admin'
-          }));
+            // Clear any stale admin creds
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('admin');
 
-          toast.success('Login successful!');
-          navigate('/admin/dashboard'); // Still redirect to admin dashboard for webarclight.com emails
-          return; // Exit early if regular user login succeeds
-        } catch (userErr) {
-          // If both admin and user login fail, throw the error
-          throw userErr;
+            // Store as regular user
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+
+            toast.success('Login successful!');
+            window.dispatchEvent(new Event('storage'));
+            navigate('/');
+            return;
+          } catch (userErr) {
+            throw userErr;
+          }
         }
       } else {
         // Regular user login
@@ -112,6 +110,9 @@ const Login = () => {
         );
 
         // Store token and user data
+        // Ensure any stale admin creds are cleared so user cannot access admin
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('admin');
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
 

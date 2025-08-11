@@ -27,24 +27,68 @@ const Chatbot = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Check login status on mount
+  // Keep auth state in sync with localStorage (supports both user and admin)
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const authToken = localStorage.getItem('authToken');
-
-    if (storedUser && authToken) {
+    const syncAuthFromStorage = () => {
       try {
-        const userData = JSON.parse(storedUser);
-        const userId = userData._id || userData.id;
-        const userEmail = userData.email;
-        
-        setUserId(userId);
-        setUserEmail(userEmail);
+        const authToken = localStorage.getItem('authToken');
+        const adminToken = localStorage.getItem('adminToken');
+        const storedUser = localStorage.getItem('user');
+        const storedAdmin = localStorage.getItem('admin');
+
+        if (authToken && storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setUserId(parsedUser._id || parsedUser.id || null);
+          setUserEmail(parsedUser.email || '');
+          return;
+        }
+
+        if (adminToken && storedAdmin) {
+          const parsedAdmin = JSON.parse(storedAdmin);
+          setUserId(parsedAdmin._id || parsedAdmin.id || null);
+          setUserEmail(parsedAdmin.email || '');
+          return;
+        }
+
+        // If nothing valid, clear
+        setUserId(null);
+        setUserEmail('');
       } catch (error) {
-        console.error('Error parsing user data:', error);
+        console.error('Error syncing auth from storage:', error);
       }
-    }
+    };
+
+    // Initial sync on mount
+    syncAuthFromStorage();
+
+    // Listen to storage updates (also triggered manually in app)
+    window.addEventListener('storage', syncAuthFromStorage);
+
+    return () => {
+      window.removeEventListener('storage', syncAuthFromStorage);
+    };
   }, []);
+
+  // Also resync when chat is opened (covers cases without storage event)
+  useEffect(() => {
+    if (isOpen) {
+      try {
+        const authToken = localStorage.getItem('authToken');
+        const adminToken = localStorage.getItem('adminToken');
+        const storedUser = localStorage.getItem('user');
+        const storedAdmin = localStorage.getItem('admin');
+        if (authToken && storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setUserId(parsedUser._id || parsedUser.id || null);
+          setUserEmail(parsedUser.email || '');
+        } else if (adminToken && storedAdmin) {
+          const parsedAdmin = JSON.parse(storedAdmin);
+          setUserId(parsedAdmin._id || parsedAdmin.id || null);
+          setUserEmail(parsedAdmin.email || '');
+        }
+      } catch {}
+    }
+  }, [isOpen]);
 
   // Poll for new messages when chat is open
   useEffect(() => {

@@ -57,7 +57,13 @@ const AdminDashboard = () => {
           setLastChatCount(newChats.length);
         }
       } catch (error) {
-        // Silent error handling
+        if (error?.response?.status === 401) {
+          // Token invalid or expired -> force logout
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('admin');
+          window.dispatchEvent(new Event('storage'));
+          navigate('/login');
+        }
       }
     };
 
@@ -89,7 +95,12 @@ const AdminDashboard = () => {
           fetchChats();
         }
       } catch (error) {
-        // Silent error handling
+        if (error?.response?.status === 401) {
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('admin');
+          window.dispatchEvent(new Event('storage'));
+          navigate('/login');
+        }
       }
     };
 
@@ -111,6 +122,13 @@ const AdminDashboard = () => {
       setChats(newChats);
       setLastChatCount(newChats.length);
     } catch (error) {
+      if (error?.response?.status === 401) {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('admin');
+        window.dispatchEvent(new Event('storage'));
+        navigate('/login');
+        return;
+      }
       setChats([]);
     } finally {
       setLoadingChats(false);
@@ -126,6 +144,13 @@ const AdminDashboard = () => {
       });
       setUsers(response.data.users || []);
     } catch (error) {
+      if (error?.response?.status === 401) {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('admin');
+        window.dispatchEvent(new Event('storage'));
+        navigate('/login');
+        return;
+      }
       setUsers([]);
     } finally {
       setLoadingUsers(false);
@@ -143,6 +168,13 @@ const AdminDashboard = () => {
       setMessages(newMessages);
       setLastMessageCount(newMessages.length);
     } catch (error) {
+      if (error?.response?.status === 401) {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('admin');
+        window.dispatchEvent(new Event('storage'));
+        navigate('/login');
+        return;
+      }
       setMessages([]);
     } finally {
       setLoadingMessages(false);

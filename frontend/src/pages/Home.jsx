@@ -188,11 +188,11 @@ function Home() {
 
 
       
-      <About />
+      {/* <About /> */}
       
       <Services />
       
-      <Contact />
+      {/* <Contact /> */}
 
     </div>
   );
